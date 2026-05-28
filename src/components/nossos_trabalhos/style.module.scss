@@ -1,0 +1,118 @@
+@use '@/styles/fontsAndColors' as *;
+
+.section {
+  @include section-padding;
+  background: var(--white);
+  overflow: hidden;
+}
+
+.container {
+  @include container;
+}
+
+// ---- Header ----
+.header {
+  @include flex-between;
+  align-items: flex-end;
+  margin-bottom: var(--space-2xl);
+  gap: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.headerText {
+  @include gold-accent-line;
+  max-width: 640px;
+}
+
+.eyebrow {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--primary);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-xs);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-black);
+  color: var(--text-dark);
+  line-height: 1;
+  margin-bottom: var(--space-md);
+
+  @include responsive('md') { font-size: var(--text-3xl); }
+}
+
+.subtitle {
+  font-size: var(--text-base);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+  max-width: 560px;
+}
+
+// Nav buttons
+.navButtons {
+  display: flex;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.navBtn {
+  width: 48px;
+  height: 48px;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+  }
+
+  &:global(.swiper-button-disabled) {
+    opacity: 0.35;
+    cursor: default;
+    &:hover {
+      background: transparent;
+      border-color: var(--border-color);
+      color: var(--text-muted);
+    }
+  }
+}
+
+// ---- Swiper ----
+.swiper {
+  overflow: visible !important;
+  padding-bottom: var(--space-2xl) !important;
+}
+
+// ---- Pagination ----
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--space-lg);
+
+  :global(.swiper-pagination-bullet) {
+    width: 8px;
+    height: 8px;
+    background: rgba(64, 42, 16, 0.2);
+    border-radius: var(--radius-full);
+    opacity: 1;
+    transition: width var(--transition-fast), background var(--transition-fast);
+  }
+
+  :global(.swiper-pagination-bullet-active) {
+    background: var(--primary) !important;
+    width: 28px;
+    border-radius: var(--radius-full);
+  }
+}

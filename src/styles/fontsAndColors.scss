@@ -1,0 +1,83 @@
+// ============================================
+// LAGEM — Design Tokens: Colors & Typography
+// ============================================
+
+// --- Color Palette ---
+$primary:       #D98E32;   // Golden Amber — primary brand
+$primary-dark:  #402A10;   // Deep Brown — headers, strong accents
+$primary-light: #D99C52;   // Warm Gold — hover states
+$secondary:     #0C0D0C;   // Near-Black — backgrounds, text
+$neutral-light: #F2F2F2;   // Off-White — section backgrounds
+$white:         #FFFFFF;
+$black:         #0C0D0C;
+$text-dark:     #1a1a18;
+$text-muted:    #6b6b5a;
+$border-color:  rgba(217, 142, 50, 0.2);
+$overlay-dark:  rgba(12, 13, 12, 0.72);
+$overlay-gold:  rgba(217, 142, 50, 0.08);
+
+// --- CSS Custom Properties ---
+
+
+// --- Mixins ---
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+
+  @media (max-width: 768px) {
+    padding: 0 var(--space-lg);
+  }
+}
+
+@mixin section-padding {
+  padding: var(--space-3xl) 0;
+
+  @media (max-width: 768px) {
+    padding: var(--space-2xl) 0;
+  }
+}
+
+@mixin hover-lift {
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+@mixin gold-accent-line {
+  &::before {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 3px;
+    background: var(--primary);
+    margin-bottom: var(--space-md);
+  }
+}
+
+@mixin hexagon($size) {
+  width: $size;
+  height: calc(#{$size} * 1.1547);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+@mixin responsive($bp) {
+  @if $bp == 'sm'  { @media (max-width: 640px)  { @content; } }
+  @if $bp == 'md'  { @media (max-width: 768px)  { @content; } }
+  @if $bp == 'lg'  { @media (max-width: 1024px) { @content; } }
+  @if $bp == 'xl'  { @media (max-width: 1280px) { @content; } }
+}

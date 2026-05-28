@@ -1,0 +1,115 @@
+@use '@/styles/fontsAndColors' as *;
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: var(--space-lg) 0;
+  transition: background var(--transition-base), padding var(--transition-base), box-shadow var(--transition-base);
+  background: transparent;
+
+  &.scrolled {
+    background: rgba(12, 13, 12, 0.96);
+    backdrop-filter: blur(12px);
+    padding: var(--space-sm) 0;
+    box-shadow: 0 2px 24px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.container {
+  @include container;
+  @include flex-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  text-decoration: none;
+}
+
+.logoWrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--primary);
+  flex-shrink: 0;
+  background: var(--black);
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--white);
+  letter-spacing: 0.08em;
+}
+
+.brandSub {
+  font-size: var(--text-xs);
+  color: var(--primary);
+  letter-spacing: 0.18em;
+  font-weight: var(--weight-medium);
+  text-transform: uppercase;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+
+  @include responsive('lg') {
+    display: none;
+  }
+}
+
+.navLink {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.04em;
+  position: relative;
+  padding-bottom: 2px;
+  transition: color var(--transition-fast);
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: var(--primary);
+    transition: width var(--transition-base);
+  }
+
+  &:hover {
+    color: var(--primary);
+    &::after { width: 100%; }
+  }
+}
+
+.ctaBtn {
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--primary);
+  color: var(--white);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+
+  &:hover {
+    background: var(--primary-light);
+    transform: translateY(-1px);
+  }
+}
