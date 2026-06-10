@@ -104,8 +104,9 @@ export default function SobreNos() {
               <span className={styles.estudantesEyebrow}>Faça parte</span>
               <h3 className={styles.estudantesTitulo}>Sobre os Alunos</h3>
               <p className={styles.estudantesDesc}>
-                O LAGEM acolhe estudantes de graduação, mestrado e doutorado em Economia e áreas
-                afins, oferecendo ambiente de pesquisa colaborativo e bolsas de iniciação científica.
+                O LAGEM é um laboratório de pesquisa em mineração e desenvolvimento regional, formado por uma equipe multidisciplinar de pesquisadores e estudantes dedicados
+                 a gerar conhecimento de ponta e impacto social. Nossos alunos têm a oportunidade de trabalhar em projetos inovadores, colaborando com pesquisadores experientes e contribuindo para o avanço da ciência na área de mineração. 
+                 Se você é apaixonado por pesquisa e quer fazer parte de um ambiente estimulante, venha conhecer nossas oportunidades para estudantes!
               </p>
             </div>
 
@@ -116,7 +117,7 @@ export default function SobreNos() {
               </div>
               <div className={styles.statDivider} />
               <div className={styles.stat}>
-                <span className={styles.statNum}>8</span>
+                <span className={styles.statNum}>4</span>
                 <span className={styles.statLabel}>Bolsistas</span>
               </div>
               <div className={styles.statDivider} />
