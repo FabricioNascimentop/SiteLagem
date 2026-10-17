@@ -18,8 +18,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { slides } from "@/data/herodata";
 
-type Slide = {
-  id: string;
+type slides = {
+  id: number;
   image: string;
   alt: string;
   title: string;
@@ -28,15 +28,15 @@ type Slide = {
 };
 
 type Props = {
-  slide: Slide;
+  slidesProps: slides;
 };
 
-function HeroSlide({ slide }: Props) {
+function HeroSlide({ slidesProps }: Props) {
   return (
     <div className={`swiper-slide ${styles.slide}`}>
       <div
         className={styles.slideBg}
-        style={{ background: slide.bg }}
+        style={{ background: slidesProps.bg }}
         aria-hidden="true"
       >
         <div className={styles.bgPattern} />
@@ -56,17 +56,17 @@ function HeroSlide({ slide }: Props) {
 
       <div className={styles.slideContent}>
         <div className={styles.slideText}>
-          <h2 style={{color:"white"}}>{slide.title}</h2>
-          <p>{slide.description}</p>
+          <h2 style={{color:"white"}}>{slidesProps.title}</h2>
+          <p>{slidesProps.description}</p>
         </div>
 
         <Image
-          src={slide.image}
-          alt={slide.alt}
+          src={slidesProps.image}
+          alt={slidesProps.alt}
           width={600}
           height={600}
           sizes="(max-width: 768px) 90vw, 600px"
-          priority={slide.id === "evento"}
+          priority={slidesProps.id === 1}
         />
       </div>
     </div>
@@ -78,6 +78,7 @@ function HeroSlide({ slide }: Props) {
 
 export default function HeroSlider() {
   return (
+    
     <section
       className={styles.hero}
       aria-label="Destaques"
@@ -108,7 +109,7 @@ export default function HeroSlider() {
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <HeroSlide slide={slide} />
+            <HeroSlide slidesProps={slide} />
           </SwiperSlide>
         ))}
       </Swiper>
