@@ -86,6 +86,8 @@
   height: 100%;
   display: flex;
   align-items: center;
+  color: white;
+  width: 75%;
 }
 
 .slideInner {
@@ -122,7 +124,6 @@
   font-family: var(--font-display);
   font-size: clamp(2rem, 4.5vw, 3.75rem);
   font-weight: var(--weight-black);
-  color: var(--white);
   line-height: var(--leading-tight);
   margin-bottom: var(--space-lg);
   letter-spacing: -0.02em;
