@@ -26,7 +26,7 @@ export default function Navbar() {
       <div className={styles.container}>
         <a href="#inicio" className={styles.brand}>
           <div className={styles.logoWrap}>
-            <Image src="/logo.png" alt="LAGEM logo" width={52} height={52} />
+            <Image src="/lagemLogo.png" alt="LAGEM logo" width={52} height={52} />
           </div>
           <div className={styles.brandText}>
             <span className={styles.brandName}>LAGEM</span>

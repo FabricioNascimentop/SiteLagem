@@ -119,5 +119,33 @@ export const Dashboards: PropsDashboard[] = [
     descricao: 'descrição',
     srcImage:'/bi/despesas-orcamentarias.png',
     titulo:'despesas orçamentárias'
+  },
+    {
+    id: 2,
+    alt: 'dashboard de despesas por função em cada município lagem',
+    descricao: 'descrição',
+    srcImage:'/bi/despesas-por-funcao.png',
+    titulo:'despesas por função'
+  },
+  {
+    id: 3,
+    alt: 'dashboard de meio ambiente e saneamento lagem',
+    descricao: 'descrição',
+    srcImage:'/bi/meio-ambiente-e-saneamento.png',
+    titulo:'meio ambiente e saneamento'
+  },
+  {
+    id: 4,
+    alt: 'dashboard de receitas orçamentárias',
+    descricao: 'descrição',
+    srcImage:'/bi/receitas-orcamentarias.png',
+    titulo:'receitas orçamentárias'
+  },
+  {
+    id: 5,
+    alt: 'dashboard de saúde e educação',
+    descricao: 'descrição',
+    srcImage:'/bi/saude-e-educacao.png',
+    titulo:'saúde e educação'
   }
 ]

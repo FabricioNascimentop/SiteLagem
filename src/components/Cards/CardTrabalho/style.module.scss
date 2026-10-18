@@ -10,6 +10,7 @@
   border: 1px solid rgba(0, 0, 0, 0.06);
   position: relative;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
+  margin: 10px 50px;
 
   &:hover {
     transform: translateY(-6px);
