@@ -1,6 +1,6 @@
 import styles from './style.module.scss'
 
-interface CardTrabalhoProps {
+interface CardArtigoProps {
   titulo: string
   autores: string
   ano: string
@@ -10,7 +10,7 @@ interface CardTrabalhoProps {
   tags?: string[]
 }
 
-export default function CardTrabalho({
+export default function CardArtigo({
   titulo,
   autores,
   ano,
@@ -18,7 +18,7 @@ export default function CardTrabalho({
   resumo,
   href = '#',
   tags = [],
-}: CardTrabalhoProps) {
+}: CardArtigoProps) {
   return (
     <article className={styles.card}>
       <div className={styles.typeTag}>{tipo}</div>

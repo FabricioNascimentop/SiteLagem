@@ -1,4 +1,4 @@
-import CardNoticia from '@/components/CardNoticia'
+import CardNoticia from '@/components/Cards/CardNoticia'
 import styles from './style.module.scss'
 
 const noticias = [
