@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import styles from "./style.module.scss";
 
@@ -10,6 +11,7 @@ interface TypePropsBI {
     descricao: string;
     srcImage: string;
     alt: string;
+    link: string
 }
 
 export default function CardBI({
@@ -18,8 +20,15 @@ export default function CardBI({
     descricao,
     srcImage,
     alt,
+    link
 }: TypePropsBI) {
     const [modalAberto, setModalAberto] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    // Garante que o portal só será renderizado no cliente (Next.js SSR safety)
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Fecha o modal com ESC e bloqueia o scroll do fundo.
     useEffect(() => {
@@ -85,60 +94,59 @@ export default function CardBI({
                 </span>
             </button>
 
-            {modalAberto && (
-    <div className={styles.overlay}>
-        <section
-            className={styles.modal}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={`titulo-modal-${id}`}
-        >
-            <button
-                type="button"
-                className={styles.fechar}
-                onClick={() => setModalAberto(false)}
-                aria-label="Fechar modal"
-            >
-                ×
-            </button>
+            {/* Renderiza o modal via Portal diretamente no body para ignorar o overflow/transforms do Swiper */}
+            {mounted && modalAberto && createPortal(
+                <div className={styles.overlay}>
+                    <section
+                        className={styles.modal}
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby={`titulo-modal-${id}`}
+                    >
+                        <button
+                            type="button"
+                            className={styles.fechar}
+                            onClick={() => setModalAberto(false)}
+                            aria-label="Fechar modal"
+                        >
+                            ×
+                        </button>
 
-            {/* Imagem: 2/3 da altura */}
-            <div className={styles.imagemModal}>
-                <Image
-                    src={srcImage}
-                    alt={alt}
-                    width={1600}
-                    height={900}
-                    sizes="80vw"
-                    className={styles.imagem}
-                />
-            </div>
+                        {/* Imagem: 2/3 da altura da tela */}
+                        <div className={styles.imagemModal}>
+                            <Image
+                                src={srcImage}
+                                alt={alt}
+                                width={1600}
+                                height={900}
+                                sizes="100vw"
+                                className={styles.imagem}
+                            />
+                        </div>
 
-            {/* Texto: 1/3 da altura */}
-            <div className={styles.conteudoModal}>
-                <span className={styles.subtitulo}>
-                    PORTFÓLIO / POWER BI
-                </span>
+                        {/* Texto: 1/3 da altura da tela */}
+                        <div className={styles.conteudoModal}>
+                            <span className={styles.subtitulo}>
+                                PORTFÓLIO / POWER BI
+                            </span>
 
-                <h2 id={`titulo-modal-${id}`}>
-                    {titulo}
-                </h2>
+                            <h2 id={`titulo-modal-${id}`}>
+                                {titulo}
+                            </h2>
 
-                <p>{descricao}</p>
+                            <p>{descricao}</p>
 
-                <p>
-                    Este painel apresenta uma análise visual dos
-                    dados, permitindo explorar indicadores,
-                    identificar tendências e comparar resultados
-                    de maneira intuitiva. Este espaço pode ser
-                    utilizado para detalhar os objetivos, a
-                    metodologia e as principais descobertas
-                    do projeto.
-                </p>
-            </div>
-        </section>
-    </div>
-)}
+                            <p>
+                                Este painel apresenta uma análise visual dos
+                                dados, permitindo explorar indicadores,
+                                identificar tendências e comparar resultados
+                                de maneira intuitiva.
+                            </p>
+                        </div>
+                    </section>
+                </div>,
+                document.body
+            )}
         </>
     );
 }

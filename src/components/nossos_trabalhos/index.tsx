@@ -18,7 +18,7 @@ export default function NossosTrabalhos() {
   return (
     <>
     <section id="pesquisas" className={styles.section}>
-      <h2>Nossos Trabalhos</h2>
+      <h2>Artigos Lagem</h2>
 
       <Swiper
         modules={[Navigation, Pagination]}
