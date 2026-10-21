@@ -96,12 +96,13 @@ export default function CardBI({
 
             {/* Renderiza o modal via Portal diretamente no body para ignorar o overflow/transforms do Swiper */}
             {mounted && modalAberto && createPortal(
-                <div className={styles.overlay}>
+                <div className={styles.overlay} onClick={() => setModalAberto(false)}>
                     <section
                         className={styles.modal}
                         role="dialog"
                         aria-modal="true"
                         aria-labelledby={`titulo-modal-${id}`}
+                        onClick={(e) => e.stopPropagation()}
                     >
                         <button
                             type="button"
