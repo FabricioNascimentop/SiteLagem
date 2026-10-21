@@ -112,19 +112,15 @@ export default function CardBI({
                             ×
                         </button>
 
-                        {/* Imagem: 2/3 da altura da tela */}
-                        <div className={styles.imagemModal}>
-                            <Image
-                                src={srcImage}
-                                alt={alt}
-                                width={1600}
-                                height={900}
-                                sizes="100vw"
-                                className={styles.imagem}
+                        <div className={styles.iframeModal}>
+                            <iframe
+                                src={link}
+                                title={`Painel de BI: ${titulo}`}
+                                className={styles.iframe}
+                                allowFullScreen
                             />
                         </div>
 
-                        {/* Texto: 1/3 da altura da tela */}
                         <div className={styles.conteudoModal}>
                             <span className={styles.subtitulo}>
                                 PORTFÓLIO / POWER BI
@@ -137,10 +133,13 @@ export default function CardBI({
                             <p>{descricao}</p>
 
                             <p>
-                                Este painel apresenta uma análise visual dos
-                                dados, permitindo explorar indicadores,
-                                identificar tendências e comparar resultados
-                                de maneira intuitiva.
+                                Explore os indicadores deste painel para conhecer
+                                diferentes aspectos do tema. Os filtros e as
+                                visualizações interativas ajudam a comparar
+                                períodos, localidades e categorias. Navegue
+                                pelas páginas do relatório para consultar os
+                                detalhes, identificar tendências e descobrir
+                                novas perspectivas.
                             </p>
                         </div>
                     </section>

@@ -90,7 +90,7 @@
 }
 
 /* ==========================================
-   ESTILOS DO MODAL (2/3 Imagem + 1/3 Texto)
+   ESTILOS DO MODAL (2/3 iframe + texto)
    ================================---------- */
 .overlay {
     position: fixed;
@@ -107,40 +107,44 @@
 
 .modal {
     position: relative;
-    background: #ffffff;
-    width: 100%;
-    max-width: 900px;
-    height: 85vh; // Altura controlada para garantir a proporção
-    max-height: 800px;
+    background: rgba(8, 12, 20, 0.96);
+    width: min(92vw, 1280px);
+    height: 90vh;
+    max-height: 1000px;
     border-radius: 16px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
     animation: scaleUp 0.2s ease-out;
 }
 
 
-/* Imagem ocupando exatamente 2/3 (66.666%) da altura do modal */
-.imagemModal {
+/* O iframe ocupa 2/3 do modal, com respiro ao redor do painel. */
+.iframeModal {
     flex: 0 0 66.666%;
     width: 100%;
-    background: #0f172a;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
     overflow: hidden;
-
-    .imagem {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
 }
 
-/* Texto ocupando o restante 1/3 (33.333%) da altura do modal com scroll interno */
+.iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 8px;
+    background: #0f172a;
+}
+
+/* Texto abaixo do iframe; o próprio conteúdo rola se não couber na tela. */
 .conteudoModal {
-    flex: 0 0 33.333%;
-    padding: 24px 32px;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 20px 32px 28px;
     overflow-y: auto;
-    background: #ffffff;
+    background: transparent;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -155,13 +159,13 @@
     h2 {
         font-size: 1.25rem;
         font-weight: 700;
-        color: #0f172a;
+        color: #ffffff;
         margin: 0;
     }
 
     p {
         font-size: 0.9rem;
-        color: #475569;
+        color: #cbd5e1;
         line-height: 1.5;
         margin: 0;
     }
@@ -207,15 +211,16 @@
 /* Ajuste responsivo para telas menores (celulares) */
 @media (max-width: 768px) {
     .modal {
-        height: 90vh;
+        width: 100%;
+        height: 92vh;
     }
     
-    .imagemModal {
-        flex: 0 0 50%;
+    .iframeModal {
+        flex-basis: 66.666%;
+        padding: 12px;
     }
 
     .conteudoModal {
-        flex: 0 0 50%;
-        padding: 16px 20px;
+        padding: 16px 20px 24px;
     }
 }
