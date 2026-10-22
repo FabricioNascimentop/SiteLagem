@@ -123,6 +123,7 @@ export default function CardBI({
                         </div>
 
                         <div className={styles.conteudoModal}>
+                            <span className={styles.DestakTelaCheia}>Clique aqui para ver em tela cheia ↑</span>
                             <span className={styles.subtitulo}>
                                 PORTFÓLIO / POWER BI
                             </span>

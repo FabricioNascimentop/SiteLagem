@@ -29,6 +29,11 @@ body {
   line-height: var(--leading-normal);
   overflow-x: hidden;
 }
+.section {
+  @include section-padding;
+  background: var(--white);
+  overflow: hidden;
+}
 
 a {
   color: inherit;
