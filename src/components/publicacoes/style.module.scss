@@ -1,5 +1,6 @@
 @use '@/styles/fontsAndColors' as *;
 .section {
   @include section-padding;
-  background: var(--neutral-light);
+  max-width: 2400px;
+  margin: auto;
 }

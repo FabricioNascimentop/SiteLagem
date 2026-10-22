@@ -17,6 +17,7 @@ type PropsArtigos = {
   href: string;
   tags: string[];
   srcImage: string;
+  Tipo: "Artigo" | "Tcc" | "Tese" | "Dissertação" | "Outro";
 }
 
 type PropsDashboard = {
@@ -65,7 +66,8 @@ export const Artigos: PropsArtigos[] = [
     resumo: 'Este estudo analisa a relação entre os repasses de CFEM e indicadores socioeconômicos em municípios mineradores do Pará entre 2010 e 2024, identificando padrões de uso e eficácia dos recursos.',
     href: '#',
     tags: ['CFEM', 'Pará', 'Royalties', 'Desenvolvimento'],
-    srcImage:'/artigos/teste.png'
+    srcImage:'/artigos/teste.png',
+    Tipo: "Artigo"
   },
   {
     id: 2,
@@ -77,6 +79,7 @@ export const Artigos: PropsArtigos[] = [
     href: '#',
     tags: ['Governança', 'Fiscal', 'Amazônia'],
     srcImage:'/artigos/teste.png',
+    Tipo: "Artigo"
   },
   {
     id: 3,
@@ -88,6 +91,7 @@ export const Artigos: PropsArtigos[] = [
     href: '#',
     tags: ['Recursos Naturais', 'Desenvolvimento', 'Econometria'],
     srcImage:'/artigos/teste.png',
+    Tipo: "Artigo"
   },
   {
     id: 4,
@@ -99,6 +103,7 @@ export const Artigos: PropsArtigos[] = [
     href: '#',
     tags: ['Transparência', 'Controle Social', 'Mineração'],
     srcImage:'/artigos/teste.png',
+    Tipo: "Artigo"
   },
   {
     id: 5,
@@ -109,7 +114,8 @@ export const Artigos: PropsArtigos[] = [
     resumo: 'Proposta de novo índice para mensurar o grau de dependência econômica de municípios em relação às receitas oriundas da exploração de recursos minerais, com aplicação piloto no Pará.',
     href: '#',
     tags: ['Metodologia', 'Indicadores', 'IDMM'],
-    srcImage:'/artigos/teste.png'
+    srcImage:'/artigos/teste.png',
+    Tipo: "Artigo"
   },
 ]
 
