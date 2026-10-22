@@ -1,6 +1,264 @@
 @use '@/styles/fontsAndColors' as *;
+
 .section {
-  @include section-padding;
-  max-width: 2400px;
-  margin: auto;
+    @include section-padding;
+
+    max-width: 2400px;
+    margin: auto;
+}
+
+.ContainerGrid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    position: relative;
+}
+
+/* Filtros por tipo */
+.Filtros {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+.BtnFiltro {
+    padding: 10px 20px;
+
+    color: #222;
+    background: transparent;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    font-size: 16px;
+    cursor: pointer;
+
+    transition:
+        color 0.25s ease,
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
+
+    &:hover {
+        border-color: #222;
+        transform: translateY(-2px);
+    }
+
+    &:focus-visible {
+        outline: 3px solid #777;
+        outline-offset: 3px;
+    }
+}
+
+.BtnFiltroAtivo {
+    color: #fff;
+    background: #222;
+    border-color: #222;
+}
+
+/* Grid de artigos */
+.GridArtigos {
+    display: grid;
+    grid-auto-flow: row dense;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    width: 100%;
+
+    column-gap: 1.5rem;
+    row-gap: 2rem;
+
+    /* Mantém os cards no lugar e anima a expansão */
+    animation: aparecerGrid 0.35s ease both;
+}
+
+.GridExpandido {
+    animation: aparecerGrid 0.4s ease both;
+}
+
+@keyframes aparecerGrid {
+    from {
+        opacity: 0.75;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Gradiente sobre os últimos cards */
+.ExpandirGrid {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    width: 100%;
+    min-height: 190px;
+    box-sizing: border-box;
+
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    z-index: 1;
+    padding: 30px 20px 18px;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.55) 35%,
+        rgba(255, 255, 255, 0.9) 70%,
+        #fff 100%
+    );
+
+    pointer-events: none;
+}
+
+/* Botão de expandir */
+.BtnExpandirGrid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    width: 30%;
+    min-width: 160px;
+    max-width: 280px;
+
+    padding: 10px 20px;
+
+    color: #000;
+    background: rgba(255, 255, 255, 0.95);
+
+    border: 1.5px solid #000;
+    border-radius: 8px;
+
+    font-size: 20px;
+    cursor: pointer;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+
+    transition:
+        background-color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+
+    pointer-events: auto;
+
+    span:first-child {
+        display: inline-block;
+        font-size: 28px;
+        line-height: 1;
+
+        transition: transform 0.3s ease;
+    }
+
+    &:hover {
+        background: #fff;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+
+        span:first-child {
+            transform: translateY(3px);
+        }
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    &:focus-visible {
+        outline: 3px solid #555;
+        outline-offset: 4px;
+    }
+}
+
+/* Botão após expandir */
+.ExpandirGridExpandido {
+    position: static;
+
+    min-height: auto;
+    padding: 24px 20px;
+
+    background: transparent;
+    pointer-events: auto;
+
+    .BtnExpandirGrid:hover span:first-child {
+        transform: translateY(-3px);
+    }
+}
+
+/* Mensagem sem resultados */
+.SemResultados {
+    width: 100%;
+    padding: 32px 16px;
+
+    text-align: center;
+    color: #666;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .GridArtigos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .BtnExpandirGrid {
+        width: 40%;
+    }
+}
+
+/* Celular */
+@media (max-width: 600px) {
+    .Filtros {
+        gap: 8px;
+        margin-bottom: 24px;
+    }
+
+    .BtnFiltro {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .GridArtigos {
+        grid-template-columns: 1fr;
+        row-gap: 1.5rem;
+    }
+
+    .ExpandirGrid {
+        min-height: 160px;
+        padding: 20px 16px 16px;
+    }
+
+    .BtnExpandirGrid {
+        width: 80%;
+        max-width: 260px;
+        font-size: 18px;
+    }
+
+    .ExpandirGridExpandido {
+        min-height: auto;
+        padding: 20px 16px;
+    }
+}
+
+/* Respeita a preferência do usuário por menos movimento */
+@media (prefers-reduced-motion: reduce) {
+    .GridArtigos,
+    .GridExpandido {
+        animation: none;
+    }
+
+    .BtnFiltro,
+    .BtnExpandirGrid,
+    .BtnExpandirGrid span:first-child {
+        transition: none;
+    }
 }

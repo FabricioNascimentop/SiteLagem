@@ -124,3 +124,78 @@
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   transition: background var(--transition-fast), color var(--transition-fast);
 }
+/* Temas por tipo de publicação */
+
+.tipoArtigo {
+    --tipo-cor: #2563eb;
+    --tipo-fundo: #dbeafe;
+}
+
+.tipoTcc {
+    --tipo-cor: #15803d;
+    --tipo-fundo: #dcfce7;
+}
+
+.tipoTese {
+    --tipo-cor: #7e22ce;
+    --tipo-fundo: #f3e8ff;
+}
+
+.tipoDissertacao {
+    --tipo-cor: #c2410c;
+    --tipo-fundo: #ffedd5;
+}
+
+.tipoOutro {
+    --tipo-cor: #475569;
+    --tipo-fundo: #e2e8f0;
+}
+
+/* Personalização do card */
+
+.card {
+    border-top: 4px solid var(--tipo-cor, #ccc);
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Etiqueta com o tipo */
+
+.typeTag {
+    color: var(--tipo-cor, #475569);
+    background-color: var(--tipo-fundo, #e2e8f0);
+
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+
+    padding: 5px 12px;
+    border-radius: 6px;
+
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Título e link de acesso */
+
+.title a {
+    color: var(--tipo-cor, inherit);
+    transition: color 0.2s ease;
+}
+
+.cta {
+    color: var(--tipo-cor, inherit);
+    transition:
+        color 0.2s ease,
+        gap 0.2s ease;
+}
+
+.cta:hover {
+    gap: 10px;
+}
