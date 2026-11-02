@@ -3,15 +3,17 @@
 import { useState } from "react";
 import styles from "./style.module.scss";
 
-import { Artigos } from "@/data/cardsData";
 import CardArtigo from "../Cards/CardTrabalho";
+import { Artigos } from "@/data/artigosData";
 
 type TipoArtigo =
     | "Artigo"
     | "Tcc"
     | "Tese"
     | "Dissertação"
-    | "Outro";
+    | "Outro"
+    | "Matéria"
+    | "Livro";
 
 const tipos: TipoArtigo[] = [
     "Artigo",
@@ -19,6 +21,8 @@ const tipos: TipoArtigo[] = [
     "Tese",
     "Dissertação",
     "Outro",
+    "Matéria",
+    "Livro"
 ];
 
 export default function Publicacoes() {

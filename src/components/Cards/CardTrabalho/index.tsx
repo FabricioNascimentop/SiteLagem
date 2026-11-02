@@ -5,10 +5,11 @@ interface CardArtigoProps {
     titulo: string;
     autores: string;
     ano: string;
-    Tipo: "Artigo" | "Tcc" | "Tese" | "Dissertação" | "Outro";
+    Tipo: "Artigo" | "Tcc" | "Tese" | "Dissertação" | "Outro" | "Matéria" | "Livro";
     resumo: string;
     href?: string;
-    tags?: string[];
+    keywords?: string[];
+    srcDoc: string
 }
 
 const estilosPorTipo: Record<CardArtigoProps["Tipo"], string> = {
@@ -17,6 +18,8 @@ const estilosPorTipo: Record<CardArtigoProps["Tipo"], string> = {
     Tese: styles.tipoTese,
     Dissertação: styles.tipoDissertacao,
     Outro: styles.tipoOutro,
+    Matéria: styles.tipoMateria,
+    Livro: styles.tipoLivro
 };
 
 export default function CardArtigo({
@@ -26,7 +29,9 @@ export default function CardArtigo({
     Tipo,
     resumo,
     href = "#",
-    tags = [],
+    keywords = [],
+    srcDoc
+    
 }: CardArtigoProps) {
     const estiloTipo = estilosPorTipo[Tipo] ?? estilosPorTipo.Outro;
 
@@ -49,11 +54,11 @@ export default function CardArtigo({
 
                 <p className={styles.resumo}>{resumo}</p>
 
-                {tags.length > 0 && (
+                {keywords.length > 0 && (
                     <div className={styles.tags}>
-                        {tags.map((tag) => (
-                            <span key={tag} className={styles.tag}>
-                                {tag}
+                        {keywords.map((kw:string) => (
+                            <span key={kw} className={styles.tag}>
+                                {kw}
                             </span>
                         ))}
                     </div>
