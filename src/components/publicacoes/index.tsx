@@ -4,6 +4,7 @@ import { useState } from "react";
 import styles from "./style.module.scss";
 
 import CardArtigo from "../Cards/CardTrabalho";
+import { prisma } from "@/lib/prisma";
 import { Artigos } from "@/data/artigosData";
 
 type TipoArtigo =
@@ -25,7 +26,7 @@ const tipos: TipoArtigo[] = [
     "Livro"
 ];
 
-export default function Publicacoes() {
+export default  function Publicacoes() {
     const [tipoSelecionado, setTipoSelecionado] =
         useState<TipoArtigo | "Todos">("Todos");
 
