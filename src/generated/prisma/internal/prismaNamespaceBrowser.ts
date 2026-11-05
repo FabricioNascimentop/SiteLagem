@@ -51,7 +51,10 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Artigo: 'Artigo'
+  dashboards: 'dashboards',
+  divulgacoes: 'divulgacoes',
+  publicacao: 'publicacao',
+  usuarios: 'usuarios'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -70,19 +73,74 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const ArtigoScalarFieldEnum = {
+export const DashboardsScalarFieldEnum = {
   id: 'id',
+  imagem_url: 'imagem_url',
   titulo: 'titulo',
-  autores: 'autores',
-  ano: 'ano',
-  resumo: 'resumo',
-  href: 'href',
-  keywords: 'keywords',
-  Tipo: 'Tipo',
-  srcDoc: 'srcDoc'
+  descricao: 'descricao',
+  url_dashboard: 'url_dashboard',
+  slug: 'slug',
+  status: 'status',
+  atualizado_em: 'atualizado_em',
+  ordem: 'ordem',
+  usuario_responsavel_id: 'usuario_responsavel_id'
 } as const
 
-export type ArtigoScalarFieldEnum = (typeof ArtigoScalarFieldEnum)[keyof typeof ArtigoScalarFieldEnum]
+export type DashboardsScalarFieldEnum = (typeof DashboardsScalarFieldEnum)[keyof typeof DashboardsScalarFieldEnum]
+
+
+export const DivulgacoesScalarFieldEnum = {
+  id: 'id',
+  imagem_url: 'imagem_url',
+  alt_text: 'alt_text',
+  titulo: 'titulo',
+  descricao: 'descricao',
+  link_destino: 'link_destino',
+  fonte: 'fonte',
+  publicado_em: 'publicado_em',
+  slug: 'slug',
+  status: 'status',
+  ordem: 'ordem',
+  usuario_responsavel_id: 'usuario_responsavel_id'
+} as const
+
+export type DivulgacoesScalarFieldEnum = (typeof DivulgacoesScalarFieldEnum)[keyof typeof DivulgacoesScalarFieldEnum]
+
+
+export const PublicacaoScalarFieldEnum = {
+  id: 'id',
+  titulo: 'titulo',
+  tipo_publicacao: 'tipo_publicacao',
+  autores: 'autores',
+  membros: 'membros',
+  keywords: 'keywords',
+  url_documento: 'url_documento',
+  slug: 'slug',
+  resumo: 'resumo',
+  ano: 'ano',
+  status: 'status',
+  usuario_responsavel_id: 'usuario_responsavel_id',
+  criado_em: 'criado_em'
+} as const
+
+export type PublicacaoScalarFieldEnum = (typeof PublicacaoScalarFieldEnum)[keyof typeof PublicacaoScalarFieldEnum]
+
+
+export const UsuariosScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  sobrenome: 'sobrenome',
+  tipo_membro: 'tipo_membro',
+  email: 'email',
+  slug: 'slug',
+  resumo: 'resumo',
+  lattes_url: 'lattes_url',
+  foto_url: 'foto_url',
+  ativo: 'ativo',
+  criado_em: 'criado_em'
+} as const
+
+export type UsuariosScalarFieldEnum = (typeof UsuariosScalarFieldEnum)[keyof typeof UsuariosScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -93,10 +151,34 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

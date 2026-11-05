@@ -1,3 +1,4 @@
+"use client";
 import CardNoticia from '@/components/Cards/CardNoticia'
 import styles from './style.module.scss'
 

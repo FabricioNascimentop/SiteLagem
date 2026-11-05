@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -11,6 +6,91 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model dashboards {
+  id                     Int       @id @default(autoincrement())
+  imagem_url             String?
+  titulo                 String
+  descricao              String?
+  url_dashboard          String
+  slug                   String    @unique
+  status                 String    @default("RASCUNHO")
+  atualizado_em          DateTime? @db.Timestamptz(6)
+  ordem                  Int       @default(0)
+  usuario_responsavel_id Int?
+  usuarios               usuarios? @relation(fields: [usuario_responsavel_id], references: [id], onUpdate: NoAction, map: "fk_dashboard_usuario_responsavel")
+
+  @@index([status, ordem], map: "idx_dashboard_status_ordem")
+  @@index([usuario_responsavel_id], map: "idx_dashboard_usuario_responsavel")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model divulgacoes {
+  id                     Int       @id @default(autoincrement())
+  imagem_url             String?
+  alt_text               String?
+  titulo                 String
+  descricao              String?
+  link_destino           String?
+  fonte                  String?
+  publicado_em           DateTime? @db.Timestamptz(6)
+  slug                   String?   @unique
+  status                 String    @default("RASCUNHO")
+  ordem                  Int       @default(0)
+  usuario_responsavel_id Int?
+  usuarios               usuarios? @relation(fields: [usuario_responsavel_id], references: [id], onUpdate: NoAction, map: "fk_divulgacao_usuario_responsavel")
+
+  @@index([status, ordem], map: "idx_divulgacao_status_ordem")
+  @@index([usuario_responsavel_id], map: "idx_divulgacao_usuario_responsavel")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model publicacao {
+  id                     Int       @id @default(autoincrement())
+  titulo                 String
+  tipo_publicacao        String
+  autores                String?
+  membros                Json      @default("[]")
+  keywords               String[]  @default([])
+  url_documento          String?
+  slug                   String    @unique
+  resumo                 String?
+  ano                    Int?
+  status                 String    @default("RASCUNHO")
+  usuario_responsavel_id Int?
+  criado_em              DateTime  @default(now()) @db.Timestamptz(6)
+  usuarios               usuarios? @relation(fields: [usuario_responsavel_id], references: [id], onUpdate: NoAction, map: "fk_publicacao_usuario_responsavel")
+
+  @@index([ano], map: "idx_publicacao_ano")
+  @@index([keywords], map: "idx_publicacao_keywords", type: Gin)
+  @@index([status], map: "idx_publicacao_status")
+  @@index([tipo_publicacao], map: "idx_publicacao_tipo")
+  @@index([usuario_responsavel_id], map: "idx_publicacao_usuario_responsavel")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model usuarios {
+  id          Int           @id @default(autoincrement())
+  nome        String
+  sobrenome   String?
+  tipo_membro String
+  email       String        @unique
+  slug        String        @unique
+  resumo      String?
+  lattes_url  String?
+  foto_url    String?
+  ativo       Boolean       @default(true)
+  criado_em   DateTime      @default(now()) @db.Timestamptz(6)
+  dashboards  dashboards[]
+  divulgacoes divulgacoes[]
+  publicacao  publicacao[]
+}
+
 enum TipoArtigo {
   Artigo
   Tcc
@@ -19,16 +99,4 @@ enum TipoArtigo {
   Outro
   Materia
   Livro
-}
-
-model Artigo {
-  id        Int        @id @default(autoincrement())
-  titulo    String
-  autores   String[]
-  ano       String
-  resumo    String
-  href      String
-  keywords  String[]
-  Tipo      TipoArtigo
-  srcDoc    String
 }

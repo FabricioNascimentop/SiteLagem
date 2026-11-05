@@ -8,5 +8,8 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Artigo'
+export type * from './models/dashboards'
+export type * from './models/divulgacoes'
+export type * from './models/publicacao'
+export type * from './models/usuarios'
 export type * from './commonInputTypes'

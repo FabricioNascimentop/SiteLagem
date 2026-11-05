@@ -18,7 +18,26 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
- * Model Artigo
- * 
+ * Model dashboards
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
  */
-export type Artigo = Prisma.ArtigoModel
+export type dashboards = Prisma.dashboardsModel
+/**
+ * Model divulgacoes
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export type divulgacoes = Prisma.divulgacoesModel
+/**
+ * Model publicacao
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export type publicacao = Prisma.publicacaoModel
+/**
+ * Model usuarios
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export type usuarios = Prisma.usuariosModel

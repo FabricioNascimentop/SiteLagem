@@ -17,9 +17,12 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { slidesHeroData } from "@/data/cardsData";
 import HeroCard from "../Cards/CardHero";
+import Teste from "./indexServer";
+
 
 
 export default function Hero() {
+
   return (
     
     <section
@@ -56,6 +59,7 @@ export default function Hero() {
           </SwiperSlide>
         ))}
       </Swiper>
+      
     </section>
   );
 }

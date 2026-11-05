@@ -9,7 +9,8 @@ const navLinks = [
   { label: 'Pesquisas',    href: '#pesquisas' },
   { label: 'Notícias',     href: '#noticias' },
   { label: 'Equipe',       href: '#equipe' },
-  { label: 'Contato',      href: '#contato' },
+  { label: 'Contato',      href: '#contato'},
+  { label: 'Usuário',       href:'#usuario'}
 ]
 
 export default function Navbar() {
