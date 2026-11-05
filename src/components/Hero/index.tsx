@@ -1,7 +1,10 @@
+
 "use client";
 
 import styles from "./style.module.scss";
+
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import {
   Autoplay,
   EffectFade,
@@ -15,20 +18,29 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { slidesHeroData } from "@/data/cardsData";
+
 import HeroCard from "../Cards/CardHero";
-import Teste from "./indexServer";
 
+type SlideHeroProps = {
+  id: number;
+  imagem_url: string | null;
+  alt_text: string | null;
+  titulo: string;
+  descricao: string | null;
+  link_destino: string | null;
+};
 
+type HeroProps = {
+  slides: SlideHeroProps[];
+};
 
-export default function Hero() {
+export default function Hero({ slides }: HeroProps) {
+  if (slides.length === 0) {
+    return null;
+  }
 
   return (
-    
-    <section
-      className={styles.hero}
-      aria-label="Destaques"
-    >
+    <section className={styles.hero} aria-label="Destaques">
       <Swiper
         modules={[
           Autoplay,
@@ -41,7 +53,7 @@ export default function Hero() {
         effect="fade"
         fadeEffect={{ crossFade: true }}
         speed={800}
-        loop
+        loop={slides.length > 1}
         autoplay={{
           delay: 5000,
           disableOnInteraction: false,
@@ -53,13 +65,18 @@ export default function Hero() {
         slidesPerView={1}
         className={styles.swiper}
       >
-        {slidesHeroData.map((slide) => (
+        {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <HeroCard {...slide} />
+            <HeroCard
+              id={slide.id}
+              srcImage={slide.imagem_url ?? "/hero/placeholder.png"}
+              alt={slide.alt_text ?? slide.titulo}
+              title={slide.titulo}
+              description={slide.descricao ?? ""}
+            />
           </SwiperSlide>
         ))}
       </Swiper>
-      
     </section>
   );
 }

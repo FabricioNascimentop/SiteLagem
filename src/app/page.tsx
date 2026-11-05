@@ -5,13 +5,23 @@ import SobreNos from '@/components/sobre_nos'
 import Footer from '@/components/Footer'
 import Publicacoes from '@/components/publicacoes'
 import Paineis from '@/components/paineis'
-import Teste from '@/components/Hero/indexServer'
 
-export default function Home() {
+import {prisma} from "@/lib/prisma"
+
+export default async function Home() {
+  const slides = await prisma.divulgacoes.findMany({
+    where: {
+      status: "PUBLICADO",
+    },
+    orderBy: [
+      { ordem: "asc" },
+      { id: "asc" },
+    ],
+  });
   return (
     <main>
       <Navbar />
-      <Teste/>
+      <Hero slides={slides}/>
       <Publicacoes/>
       <Paineis/>
       <Noticias />

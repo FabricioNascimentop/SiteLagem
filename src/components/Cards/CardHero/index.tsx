@@ -1,7 +1,6 @@
-import styles from './style.module.scss'
-import Image from 'next/image';
 
-
+import styles from "./style.module.scss";
+import Image from "next/image";
 
 type HeroSlidesProps = {
   id: number;
@@ -9,9 +8,7 @@ type HeroSlidesProps = {
   alt: string;
   title: string;
   description: string;
-  bg: string;
 };
-
 
 export default function HeroCard({
   id,
@@ -19,17 +16,11 @@ export default function HeroCard({
   alt,
   title,
   description,
-  bg,
 }: HeroSlidesProps) {
   return (
-    <div
-      className={styles.slide}
-      style={{ background: bg }}
-    >
+    <div className={styles.slide}>
       <div className={styles.container}>
-        <h2 className={styles.title}>
-          {title}
-        </h2>
+        <h2 className={styles.title}>{title}</h2>
 
         <div className={styles.imageContainer}>
           <Image
@@ -43,10 +34,7 @@ export default function HeroCard({
           />
         </div>
 
-
-        <p className={styles.description}>
-          {description}
-        </p>
+        <p className={styles.description}>{description}</p>
       </div>
     </div>
   );
