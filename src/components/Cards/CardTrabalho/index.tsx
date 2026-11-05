@@ -3,7 +3,7 @@ import styles from "./style.module.scss";
 interface CardArtigoProps {
     id?: number;
     titulo: string;
-    autores: string;
+    autores: string[];
     ano: string;
     Tipo: "Artigo" | "Tcc" | "Tese" | "Dissertação" | "Outro" | "Matéria" | "Livro";
     resumo: string;

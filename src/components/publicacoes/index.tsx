@@ -4,8 +4,6 @@ import { useState } from "react";
 import styles from "./style.module.scss";
 
 import CardArtigo from "../Cards/CardTrabalho";
-import { prisma } from "@/lib/prisma";
-import { Artigos } from "@/data/artigosData";
 
 type TipoArtigo =
     | "Artigo"
@@ -16,18 +14,29 @@ type TipoArtigo =
     | "Matéria"
     | "Livro";
 
+type PropsArtigos = {
+    id: number;
+    titulo: string;
+    autores: string[];
+    ano: string;
+    resumo: string;
+    href: string;
+    keywords: string[];
+    Tipo: TipoArtigo;
+    srcDoc: string;
+};
+
+type PublicacoesProps = {
+    Artigos: PropsArtigos[];
+};
+
 const tipos: TipoArtigo[] = [
-    "Artigo",
-    "Tcc",
-    "Tese",
-    "Dissertação",
-    "Outro",
-    "Matéria",
-    "Livro"
+    "Artigo", "Tcc", "Tese", "Dissertação",
+    "Outro", "Matéria", "Livro"
 ];
 
-export default  function Publicacoes() {
-    const [tipoSelecionado, setTipoSelecionado] =
+export default function Publicacoes({ Artigos }: PublicacoesProps) {
+        const [tipoSelecionado, setTipoSelecionado] =
         useState<TipoArtigo | "Todos">("Todos");
 
     const [expandido, setExpandido] = useState(false);
@@ -103,10 +112,7 @@ export default  function Publicacoes() {
                     }`}
                 >
                     {artigosVisiveis.map((artigo) => (
-                        <CardArtigo
-                            {...artigo}
-                            key={artigo.id}
-                        />
+                        <CardArtigo {...artigo} key={artigo.id} />
                     ))}
                 </div>
 

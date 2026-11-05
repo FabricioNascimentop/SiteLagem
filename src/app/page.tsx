@@ -18,11 +18,25 @@ export default async function Home() {
       { id: "asc" },
     ],
   });
+  const artigos = await prisma.publicacao.findMany({})
+  const tipos = ["Artigo", "Tcc", "Tese", "Dissertação", "Outro", "Matéria", "Livro"] as const;
+
+  const artigosParaExibir = artigos.map((a) => ({
+    id: a.id,
+    titulo: a.titulo,
+    autores: a.autores ? a.autores.split(",").map((nome) => nome.trim()) : [],
+    ano: a.ano?.toString() ?? "",
+    resumo: a.resumo ?? "",
+    href: a.url_documento ?? "#",
+    keywords: a.keywords,
+    Tipo: tipos.find((tipo) => tipo.toLowerCase() === a.tipo_publicacao.toLowerCase()) ?? "Outro",
+    srcDoc: a.url_documento ?? "",
+  }));
   return (
     <main>
       <Navbar />
       <Hero slides={slides}/>
-      <Publicacoes/>
+      <Publicacoes Artigos={artigosParaExibir}/>
       <Paineis/>
       <Noticias />
       <SobreNos />
