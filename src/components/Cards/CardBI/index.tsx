@@ -62,14 +62,16 @@ export default function CardBI({
                 aria-label={`Ver detalhes de ${titulo}`}
             >
                 <span className={styles.imagemContainer}>
-                    <Image
-                        src={srcImage}
-                        alt={alt}
-                        width={900}
-                        height={400}
-                        sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw"
-                        className={styles.imagem}
-                    />
+                    {srcImage && (
+                        <Image
+                            src={srcImage}
+                            alt={alt}
+                            width={900}
+                            height={400}
+                            sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw"
+                            className={styles.imagem}
+                        />
+                    )}
 
                     <span className={styles.etiqueta}>
                         Power BI
