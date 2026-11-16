@@ -6,19 +6,24 @@ import Footer from '@/components/Footer'
 import Publicacoes from '@/components/publicacoes'
 import Paineis from '@/components/paineis'
 
-import {prisma} from "@/lib/prisma"
+import { prisma } from "@/lib/prisma"
 
 export default async function Home() {
-  const slides = await prisma.divulgacoes.findMany({
-    where: {
-      status: "PUBLICADO",
-    },
-    orderBy: [
-      { ordem: "asc" },
-      { id: "asc" },
-    ],
-  });
-  const artigos = await prisma.publicacao.findMany({})
+  const [slides, artigos, dashboards] = await Promise.all([
+    prisma.divulgacoes.findMany({
+      where: { status: "PUBLICADO" },
+      orderBy: [{ ordem: "asc" }, { id: "asc" }],
+    }),
+    prisma.publicacao.findMany({
+      where: { status: "PUBLICADO" },
+      orderBy: [{ ano: "desc" }, { id: "desc" }],
+    }),
+    prisma.dashboards.findMany({
+      where: { status: "PUBLICADO" },
+      orderBy: [{ ordem: "asc" }, { id: "asc" }],
+    }),
+  ]);
+
   const tipos = ["Artigo", "Tcc", "Tese", "Dissertação", "Outro", "Matéria", "Livro"] as const;
 
   const artigosParaExibir = artigos.map((a) => ({
@@ -32,15 +37,16 @@ export default async function Home() {
     Tipo: tipos.find((tipo) => tipo.toLowerCase() === a.tipo_publicacao.toLowerCase()) ?? "Outro",
     srcDoc: a.url_documento ?? "",
   }));
+
   return (
     <main>
       <Navbar />
-      <Hero slides={slides}/>
-      <Publicacoes Artigos={artigosParaExibir}/>
-      <Paineis/>
+      <Hero slides={slides} />
+      <Publicacoes Artigos={artigosParaExibir} />
+      <Paineis dashboards={dashboards} />
       <Noticias />
       <SobreNos />
       <Footer />
     </main>
-  )
+  );
 }
