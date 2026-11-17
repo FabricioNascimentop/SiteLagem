@@ -20,3 +20,11 @@ export const prisma =
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
 }
+const dbUrl = new URL(process.env.DATABASE_URL!);
+
+console.log("DATABASE_URL em uso:", {
+  host: dbUrl.hostname,
+  port: dbUrl.port,
+  username: decodeURIComponent(dbUrl.username),
+  database: dbUrl.pathname,
+});

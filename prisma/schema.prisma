@@ -78,7 +78,7 @@ model usuarios {
   id          Int           @id @default(autoincrement())
   nome        String
   sobrenome   String?
-  tipo_membro String
+  tipo_membro MembrosTipo @default(Aluno)
   email       String        @unique
   slug        String        @unique
   resumo      String?
@@ -99,4 +99,10 @@ enum TipoArtigo {
   Outro
   Materia
   Livro
+}
+
+enum MembrosTipo {
+  Professor
+  Aluno
+  Colaborador
 }
