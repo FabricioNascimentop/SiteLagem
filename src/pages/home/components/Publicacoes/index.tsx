@@ -3,7 +3,7 @@
 import { useState } from "react";
 import styles from "./style.module.scss";
 
-import CardArtigo from "../Cards/CardTrabalho";
+import CardArtigo from "@/components/Cards/CardTrabalho";
 
 type TipoArtigo =
     | "Artigo"

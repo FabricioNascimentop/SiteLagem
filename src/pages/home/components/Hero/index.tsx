@@ -19,7 +19,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import HeroCard from "../Cards/CardHero";
+import HeroCard from "@/components/Cards/CardHero";
 
 type SlideHeroProps = {
   id: number;

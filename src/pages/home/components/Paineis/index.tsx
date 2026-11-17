@@ -8,7 +8,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
 import styles from './style.module.scss'
-import CardBI from '../Cards/CardBI'
+import CardBI from '@/components/Cards/CardBI'
 
 type Dashboard = {
   id: number;
