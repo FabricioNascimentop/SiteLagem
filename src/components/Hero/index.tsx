@@ -30,11 +30,9 @@ type SlideHeroProps = {
   link_destino: string | null;
 };
 
-type HeroProps = {
-  slides: SlideHeroProps[];
-};
 
-export default function Hero({ slides }: HeroProps) {
+
+export default function Hero({ slides }: {slides: SlideHeroProps[]}) {
   if (slides.length === 0) {
     return null;
   }

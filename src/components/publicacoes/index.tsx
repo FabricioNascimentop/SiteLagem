@@ -27,7 +27,7 @@ type PropsArtigos = {
 };
 
 type PublicacoesProps = {
-    Artigos: PropsArtigos[];
+    Publicacoes: PropsArtigos[];
 };
 
 const tipos: TipoArtigo[] = [
@@ -35,9 +35,9 @@ const tipos: TipoArtigo[] = [
     "Outro", "Matéria", "Livro"
 ];
 
-export default function Publicacoes({ Artigos }: PublicacoesProps) {
-        const [tipoSelecionado, setTipoSelecionado] =
-        useState<TipoArtigo | "Todos">("Todos");
+export default function Publicacoes({ Publicacoes }: { Publicacoes: PropsArtigos[] }) {
+    const [tipoSelecionado, setTipoSelecionado] =
+    useState<TipoArtigo | "Todos">("Todos");
 
     const [expandido, setExpandido] = useState(false);
 
@@ -45,8 +45,8 @@ export default function Publicacoes({ Artigos }: PublicacoesProps) {
 
     // Filtra os artigos pelo tipo selecionado
     const artigosFiltrados = tipoSelecionado === "Todos"
-        ? Artigos
-        : Artigos.filter(
+        ? Publicacoes
+        : Publicacoes.filter(
             (artigo) => artigo.Tipo === tipoSelecionado
         );
 
@@ -111,8 +111,8 @@ export default function Publicacoes({ Artigos }: PublicacoesProps) {
                         expandido ? styles.GridExpandido : ""
                     }`}
                 >
-                    {artigosVisiveis.map((artigo) => (
-                        <CardArtigo {...artigo} key={artigo.id} />
+                    {artigosVisiveis.map((Publicacoes) => (
+                        <CardArtigo {...Publicacoes} key={Publicacoes.id} />
                     ))}
                 </div>
 
