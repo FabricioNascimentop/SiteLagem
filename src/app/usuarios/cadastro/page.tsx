@@ -3,15 +3,32 @@
 import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import styles from './style.module.scss'
+import { cadastrarUsuario } from '@/actions/cadastro'
+import { CadastroTypes } from '@/types/backendTypes/cadastro'
+
+
 
 export default function CadastroPage() {
   const [mensagem, setMensagem] = useState('')
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    setMensagem(
-      'A interface está pronta. A criação da conta será ativada quando a autenticação estiver integrada.'
-    )
+   
+    const formData = new FormData(event.currentTarget)
+
+    const Data: CadastroTypes = {
+    nome: String(formData.get('nome')),
+    sobrenome: String(formData.get('sobrenome')),
+    email: String(formData.get('email')),
+    lattes_url: String(formData.get('lattes_url') ?? ''),
+    senha: String(formData.get('senha')),
+    confirmarSenha: String(formData.get('confirmarSenha')),
+    resumo: String(formData.get('resumo') ?? '')
+  }
+    console.log(Data)
+
+    const resultado = await cadastrarUsuario(Data)
+    setMensagem(resultado.mensagem)
   }
 
   return (
@@ -51,6 +68,30 @@ export default function CadastroPage() {
           <label className={styles.field}>
             <span>Currículo Lattes <small>(opcional)</small></span>
             <input name="lattes_url" type="url" placeholder="https://lattes.cnpq.br/..." />
+          </label>
+
+          <label className={styles.field}>
+            <span>Senha</span>
+            <input
+              name="senha"
+              type="password"
+              placeholder="Crie uma senha"
+              autoComplete="new-password"
+              minLength={8}
+              required
+            />
+          </label>
+
+          <label className={styles.field}>
+            <span>Confirmar senha</span>
+            <input
+              name="confirmarSenha"
+              type="password"
+              placeholder="Digite a senha novamente"
+              autoComplete="new-password"
+              minLength={8}
+              required
+            />
           </label>
 
           <label className={styles.field}>
