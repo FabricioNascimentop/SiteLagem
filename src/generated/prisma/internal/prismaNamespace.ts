@@ -819,7 +819,8 @@ export const UsuariosScalarFieldEnum = {
   lattes_url: 'lattes_url',
   foto_url: 'foto_url',
   ativo: 'ativo',
-  criado_em: 'criado_em'
+  criado_em: 'criado_em',
+  senha: 'senha'
 } as const
 
 export type UsuariosScalarFieldEnum = (typeof UsuariosScalarFieldEnum)[keyof typeof UsuariosScalarFieldEnum]

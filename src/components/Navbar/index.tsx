@@ -1,27 +1,27 @@
+
 'use client'
+
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import styles from './style.module.scss'
 
 const navLinks = [
-  { label: 'Início',       href: '#inicio' },
-  { label: 'Sobre',        href: '#sobre' },
-  { label: 'Pesquisas',    href: '#pesquisas' },
-  { label: 'Notícias',     href: '#noticias' },
-  { label: 'Equipe',       href: '#equipe' },
-  { label: 'Contato',      href: '#contato'},
+  { label: 'Início', href: '#inicio' },
+  { label: 'Sobre', href: '#sobre' },
+  { label: 'Pesquisas', href: '#pesquisas' },
+  { label: 'Notícias', href: '#noticias' },
+  { label: 'Equipe', href: '#equipe' },
+  { label: 'Contato', href: '#contato' },
 ]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-
   const [modalUsuarioOpen, setModalUsuarioOpen] = useState(false)
-
-
-
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
+
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -31,8 +31,14 @@ export default function Navbar() {
       <div className={styles.container}>
         <a href="#inicio" className={styles.brand}>
           <div className={styles.logoWrap}>
-            <Image src="/lagemLogo.png" alt="LAGEM logo" width={52} height={52} />
+            <Image
+              src="/lagemLogo.png"
+              alt="LAGEM logo"
+              width={52}
+              height={52}
+            />
           </div>
+
           <div className={styles.brandText}>
             <span className={styles.brandName}>LAGEM</span>
             <span className={styles.brandSub}>UFPA</span>
@@ -45,18 +51,51 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <div className={styles.ctaBtn} onClick={() => setModalUsuarioOpen(true)}>
+
+          <button
+            type="button"
+            className={styles.ctaBtn}
+            onClick={() => setModalUsuarioOpen(true)}
+          >
             Sou pesquisador
-          </div>
-
-          {modalUsuarioOpen && (
-            <div className={styles.Modal}>
-              
-            </div>
-          )}
-
+          </button>
         </nav>
       </div>
+
+      {modalUsuarioOpen && (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setModalUsuarioOpen(false)}
+        >
+          <div
+            className={styles.modal}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalTitulo"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className={styles.modalClose}
+              onClick={() => setModalUsuarioOpen(false)}
+              aria-label="Fechar modal"
+            >
+              ×
+            </button>
+
+            <h2 id="modalTitulo">Área do pesquisador</h2>
+
+            <p>
+              Acesse sua conta ou cadastre-se para fazer parte do LAGEM.
+            </p>
+
+            <div className={styles.modalActions}>
+              <Link href="/usuarios/cadastro" className={styles.modalPrimary}> Criar conta</Link>
+               <Link href="/usuarios/login" className={styles.modalSecondary}> Logar </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   )
 }

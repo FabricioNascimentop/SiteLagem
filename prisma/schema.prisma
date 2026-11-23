@@ -78,7 +78,7 @@ model usuarios {
   id          Int           @id @default(autoincrement())
   nome        String
   sobrenome   String?
-  tipo_membro MembrosTipo @default(Aluno)
+  tipo_membro String
   email       String        @unique
   slug        String        @unique
   resumo      String?
@@ -86,6 +86,7 @@ model usuarios {
   foto_url    String?
   ativo       Boolean       @default(true)
   criado_em   DateTime      @default(now()) @db.Timestamptz(6)
+  senha       String?
   dashboards  dashboards[]
   divulgacoes divulgacoes[]
   publicacao  publicacao[]
@@ -99,10 +100,4 @@ enum TipoArtigo {
   Outro
   Materia
   Livro
-}
-
-enum MembrosTipo {
-  Professor
-  Aluno
-  Colaborador
 }

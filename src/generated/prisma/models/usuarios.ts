@@ -47,6 +47,7 @@ export type UsuariosMinAggregateOutputType = {
   foto_url: string | null
   ativo: boolean | null
   criado_em: Date | null
+  senha: string | null
 }
 
 export type UsuariosMaxAggregateOutputType = {
@@ -61,6 +62,7 @@ export type UsuariosMaxAggregateOutputType = {
   foto_url: string | null
   ativo: boolean | null
   criado_em: Date | null
+  senha: string | null
 }
 
 export type UsuariosCountAggregateOutputType = {
@@ -75,6 +77,7 @@ export type UsuariosCountAggregateOutputType = {
   foto_url: number
   ativo: number
   criado_em: number
+  senha: number
   _all: number
 }
 
@@ -99,6 +102,7 @@ export type UsuariosMinAggregateInputType = {
   foto_url?: true
   ativo?: true
   criado_em?: true
+  senha?: true
 }
 
 export type UsuariosMaxAggregateInputType = {
@@ -113,6 +117,7 @@ export type UsuariosMaxAggregateInputType = {
   foto_url?: true
   ativo?: true
   criado_em?: true
+  senha?: true
 }
 
 export type UsuariosCountAggregateInputType = {
@@ -127,6 +132,7 @@ export type UsuariosCountAggregateInputType = {
   foto_url?: true
   ativo?: true
   criado_em?: true
+  senha?: true
   _all?: true
 }
 
@@ -228,6 +234,7 @@ export type UsuariosGroupByOutputType = {
   foto_url: string | null
   ativo: boolean
   criado_em: Date
+  senha: string | null
   _count: UsuariosCountAggregateOutputType | null
   _avg: UsuariosAvgAggregateOutputType | null
   _sum: UsuariosSumAggregateOutputType | null
@@ -265,6 +272,7 @@ export type usuariosWhereInput = {
   foto_url?: Prisma.StringNullableFilter<"usuarios"> | string | null
   ativo?: Prisma.BoolFilter<"usuarios"> | boolean
   criado_em?: Prisma.DateTimeFilter<"usuarios"> | Date | string
+  senha?: Prisma.StringNullableFilter<"usuarios"> | string | null
   dashboards?: Prisma.DashboardsListRelationFilter
   divulgacoes?: Prisma.DivulgacoesListRelationFilter
   publicacao?: Prisma.PublicacaoListRelationFilter
@@ -282,6 +290,7 @@ export type usuariosOrderByWithRelationInput = {
   foto_url?: Prisma.SortOrderInput | Prisma.SortOrder
   ativo?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
+  senha?: Prisma.SortOrderInput | Prisma.SortOrder
   dashboards?: Prisma.dashboardsOrderByRelationAggregateInput
   divulgacoes?: Prisma.divulgacoesOrderByRelationAggregateInput
   publicacao?: Prisma.publicacaoOrderByRelationAggregateInput
@@ -302,6 +311,7 @@ export type usuariosWhereUniqueInput = Prisma.AtLeast<{
   foto_url?: Prisma.StringNullableFilter<"usuarios"> | string | null
   ativo?: Prisma.BoolFilter<"usuarios"> | boolean
   criado_em?: Prisma.DateTimeFilter<"usuarios"> | Date | string
+  senha?: Prisma.StringNullableFilter<"usuarios"> | string | null
   dashboards?: Prisma.DashboardsListRelationFilter
   divulgacoes?: Prisma.DivulgacoesListRelationFilter
   publicacao?: Prisma.PublicacaoListRelationFilter
@@ -319,6 +329,7 @@ export type usuariosOrderByWithAggregationInput = {
   foto_url?: Prisma.SortOrderInput | Prisma.SortOrder
   ativo?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
+  senha?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.usuariosCountOrderByAggregateInput
   _avg?: Prisma.usuariosAvgOrderByAggregateInput
   _max?: Prisma.usuariosMaxOrderByAggregateInput
@@ -341,6 +352,7 @@ export type usuariosScalarWhereWithAggregatesInput = {
   foto_url?: Prisma.StringNullableWithAggregatesFilter<"usuarios"> | string | null
   ativo?: Prisma.BoolWithAggregatesFilter<"usuarios"> | boolean
   criado_em?: Prisma.DateTimeWithAggregatesFilter<"usuarios"> | Date | string
+  senha?: Prisma.StringNullableWithAggregatesFilter<"usuarios"> | string | null
 }
 
 export type usuariosCreateInput = {
@@ -354,6 +366,7 @@ export type usuariosCreateInput = {
   foto_url?: string | null
   ativo?: boolean
   criado_em?: Date | string
+  senha?: string | null
   dashboards?: Prisma.dashboardsCreateNestedManyWithoutUsuariosInput
   divulgacoes?: Prisma.divulgacoesCreateNestedManyWithoutUsuariosInput
   publicacao?: Prisma.publicacaoCreateNestedManyWithoutUsuariosInput
@@ -371,6 +384,7 @@ export type usuariosUncheckedCreateInput = {
   foto_url?: string | null
   ativo?: boolean
   criado_em?: Date | string
+  senha?: string | null
   dashboards?: Prisma.dashboardsUncheckedCreateNestedManyWithoutUsuariosInput
   divulgacoes?: Prisma.divulgacoesUncheckedCreateNestedManyWithoutUsuariosInput
   publicacao?: Prisma.publicacaoUncheckedCreateNestedManyWithoutUsuariosInput
@@ -387,6 +401,7 @@ export type usuariosUpdateInput = {
   foto_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  senha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dashboards?: Prisma.dashboardsUpdateManyWithoutUsuariosNestedInput
   divulgacoes?: Prisma.divulgacoesUpdateManyWithoutUsuariosNestedInput
   publicacao?: Prisma.publicacaoUpdateManyWithoutUsuariosNestedInput
@@ -404,6 +419,7 @@ export type usuariosUncheckedUpdateInput = {
   foto_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  senha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dashboards?: Prisma.dashboardsUncheckedUpdateManyWithoutUsuariosNestedInput
   divulgacoes?: Prisma.divulgacoesUncheckedUpdateManyWithoutUsuariosNestedInput
   publicacao?: Prisma.publicacaoUncheckedUpdateManyWithoutUsuariosNestedInput
@@ -421,6 +437,7 @@ export type usuariosCreateManyInput = {
   foto_url?: string | null
   ativo?: boolean
   criado_em?: Date | string
+  senha?: string | null
 }
 
 export type usuariosUpdateManyMutationInput = {
@@ -434,6 +451,7 @@ export type usuariosUpdateManyMutationInput = {
   foto_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  senha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type usuariosUncheckedUpdateManyInput = {
@@ -448,6 +466,7 @@ export type usuariosUncheckedUpdateManyInput = {
   foto_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  senha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UsuariosNullableScalarRelationFilter = {
@@ -467,6 +486,7 @@ export type usuariosCountOrderByAggregateInput = {
   foto_url?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
+  senha?: Prisma.SortOrder
 }
 
 export type usuariosAvgOrderByAggregateInput = {
@@ -485,6 +505,7 @@ export type usuariosMaxOrderByAggregateInput = {
   foto_url?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
+  senha?: Prisma.SortOrder
 }
 
 export type usuariosMinOrderByAggregateInput = {
@@ -499,6 +520,7 @@ export type usuariosMinOrderByAggregateInput = {
   foto_url?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
+  senha?: Prisma.SortOrder
 }
 
 export type usuariosSumOrderByAggregateInput = {
@@ -568,6 +590,7 @@ export type usuariosCreateWithoutDashboardsInput = {
   foto_url?: string | null
   ativo?: boolean
   criado_em?: Date | string
+  senha?: string | null
   divulgacoes?: Prisma.divulgacoesCreateNestedManyWithoutUsuariosInput
   publicacao?: Prisma.publicacaoCreateNestedManyWithoutUsuariosInput
 }
@@ -584,6 +607,7 @@ export type usuariosUncheckedCreateWithoutDashboardsInput = {
   foto_url?: string | null
   ativo?: boolean
   criado_em?: Date | string
+  senha?: string | null
   divulgacoes?: Prisma.divulgacoesUncheckedCreateNestedManyWithoutUsuariosInput
   publicacao?: Prisma.publicacaoUncheckedCreateNestedManyWithoutUsuariosInput
 }
@@ -615,6 +639,7 @@ export type usuariosUpdateWithoutDashboardsInput = {
   foto_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  senha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   divulgacoes?: Prisma.divulgacoesUpdateManyWithoutUsuariosNestedInput
   publicacao?: Prisma.publicacaoUpdateManyWithoutUsuariosNestedInput
 }
@@ -631,6 +656,7 @@ export type usuariosUncheckedUpdateWithoutDashboardsInput = {
   foto_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  senha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   divulgacoes?: Prisma.divulgacoesUncheckedUpdateManyWithoutUsuariosNestedInput
   publicacao?: Prisma.publicacaoUncheckedUpdateManyWithoutUsuariosNestedInput
 }
@@ -646,6 +672,7 @@ export type usuariosCreateWithoutDivulgacoesInput = {
   foto_url?: string | null
   ativo?: boolean
   criado_em?: Date | string
+  senha?: string | null
   dashboards?: Prisma.dashboardsCreateNestedManyWithoutUsuariosInput
   publicacao?: Prisma.publicacaoCreateNestedManyWithoutUsuariosInput
 }
@@ -662,6 +689,7 @@ export type usuariosUncheckedCreateWithoutDivulgacoesInput = {
   foto_url?: string | null
   ativo?: boolean
   criado_em?: Date | string
+  senha?: string | null
   dashboards?: Prisma.dashboardsUncheckedCreateNestedManyWithoutUsuariosInput
   publicacao?: Prisma.publicacaoUncheckedCreateNestedManyWithoutUsuariosInput
 }
@@ -693,6 +721,7 @@ export type usuariosUpdateWithoutDivulgacoesInput = {
   foto_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  senha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dashboards?: Prisma.dashboardsUpdateManyWithoutUsuariosNestedInput
   publicacao?: Prisma.publicacaoUpdateManyWithoutUsuariosNestedInput
 }
@@ -709,6 +738,7 @@ export type usuariosUncheckedUpdateWithoutDivulgacoesInput = {
   foto_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  senha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dashboards?: Prisma.dashboardsUncheckedUpdateManyWithoutUsuariosNestedInput
   publicacao?: Prisma.publicacaoUncheckedUpdateManyWithoutUsuariosNestedInput
 }
@@ -724,6 +754,7 @@ export type usuariosCreateWithoutPublicacaoInput = {
   foto_url?: string | null
   ativo?: boolean
   criado_em?: Date | string
+  senha?: string | null
   dashboards?: Prisma.dashboardsCreateNestedManyWithoutUsuariosInput
   divulgacoes?: Prisma.divulgacoesCreateNestedManyWithoutUsuariosInput
 }
@@ -740,6 +771,7 @@ export type usuariosUncheckedCreateWithoutPublicacaoInput = {
   foto_url?: string | null
   ativo?: boolean
   criado_em?: Date | string
+  senha?: string | null
   dashboards?: Prisma.dashboardsUncheckedCreateNestedManyWithoutUsuariosInput
   divulgacoes?: Prisma.divulgacoesUncheckedCreateNestedManyWithoutUsuariosInput
 }
@@ -771,6 +803,7 @@ export type usuariosUpdateWithoutPublicacaoInput = {
   foto_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  senha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dashboards?: Prisma.dashboardsUpdateManyWithoutUsuariosNestedInput
   divulgacoes?: Prisma.divulgacoesUpdateManyWithoutUsuariosNestedInput
 }
@@ -787,6 +820,7 @@ export type usuariosUncheckedUpdateWithoutPublicacaoInput = {
   foto_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  senha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dashboards?: Prisma.dashboardsUncheckedUpdateManyWithoutUsuariosNestedInput
   divulgacoes?: Prisma.divulgacoesUncheckedUpdateManyWithoutUsuariosNestedInput
 }
@@ -852,6 +886,7 @@ export type usuariosSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   foto_url?: boolean
   ativo?: boolean
   criado_em?: boolean
+  senha?: boolean
   dashboards?: boolean | Prisma.usuarios$dashboardsArgs<ExtArgs>
   divulgacoes?: boolean | Prisma.usuarios$divulgacoesArgs<ExtArgs>
   publicacao?: boolean | Prisma.usuarios$publicacaoArgs<ExtArgs>
@@ -870,6 +905,7 @@ export type usuariosSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   foto_url?: boolean
   ativo?: boolean
   criado_em?: boolean
+  senha?: boolean
 }, ExtArgs["result"]["usuarios"]>
 
 export type usuariosSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -884,6 +920,7 @@ export type usuariosSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   foto_url?: boolean
   ativo?: boolean
   criado_em?: boolean
+  senha?: boolean
 }, ExtArgs["result"]["usuarios"]>
 
 export type usuariosSelectScalar = {
@@ -898,9 +935,10 @@ export type usuariosSelectScalar = {
   foto_url?: boolean
   ativo?: boolean
   criado_em?: boolean
+  senha?: boolean
 }
 
-export type usuariosOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nome" | "sobrenome" | "tipo_membro" | "email" | "slug" | "resumo" | "lattes_url" | "foto_url" | "ativo" | "criado_em", ExtArgs["result"]["usuarios"]>
+export type usuariosOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nome" | "sobrenome" | "tipo_membro" | "email" | "slug" | "resumo" | "lattes_url" | "foto_url" | "ativo" | "criado_em" | "senha", ExtArgs["result"]["usuarios"]>
 export type usuariosInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   dashboards?: boolean | Prisma.usuarios$dashboardsArgs<ExtArgs>
   divulgacoes?: boolean | Prisma.usuarios$divulgacoesArgs<ExtArgs>
@@ -929,6 +967,7 @@ export type $usuariosPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     foto_url: string | null
     ativo: boolean
     criado_em: Date
+    senha: string | null
   }, ExtArgs["result"]["usuarios"]>
   composites: {}
 }
@@ -1366,6 +1405,7 @@ export interface usuariosFieldRefs {
   readonly foto_url: Prisma.FieldRef<"usuarios", 'String'>
   readonly ativo: Prisma.FieldRef<"usuarios", 'Boolean'>
   readonly criado_em: Prisma.FieldRef<"usuarios", 'DateTime'>
+  readonly senha: Prisma.FieldRef<"usuarios", 'String'>
 }
     
 
