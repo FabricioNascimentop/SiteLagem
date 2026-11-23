@@ -10,11 +10,15 @@ const navLinks = [
   { label: 'Notícias',     href: '#noticias' },
   { label: 'Equipe',       href: '#equipe' },
   { label: 'Contato',      href: '#contato'},
-  { label: 'Usuário',       href:'#usuario'}
 ]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+
+  const [modalUsuarioOpen, setModalUsuarioOpen] = useState(false)
+
+
+
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -41,7 +45,16 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <a href="#contato" className={styles.ctaBtn}>Contato</a>
+          <div className={styles.ctaBtn} onClick={() => setModalUsuarioOpen(true)}>
+            Sou pesquisador
+          </div>
+
+          {modalUsuarioOpen && (
+            <div className={styles.Modal}>
+              
+            </div>
+          )}
+
         </nav>
       </div>
     </header>
