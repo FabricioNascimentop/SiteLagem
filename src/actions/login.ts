@@ -1,5 +1,8 @@
+
 'use server'
 
+import { cookies } from 'next/headers'
+import { criarToken } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
 interface LoginTypes {
@@ -24,19 +27,36 @@ export async function loginUsuario(dados: LoginTypes) {
     }
 
     if (!usuario.ativo) {
-      throw new Error('Sua conta ainda não está ativa. Aguarde a aprovação da equipe.')
+      throw new Error(
+        'Sua conta ainda não está ativa. Aguarde a aprovação da equipe.'
+      )
     }
+
+    // Criar token
+    const token = await criarToken(String(usuario.id))
+
+    // Salvar cookie
+    const cookieStore = await cookies()
+
+    cookieStore.set('session', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7
+    })
 
     return {
       sucesso: true,
-      mensagem: 'Credenciais corretas. A validação do login funcionou, mas a sessão de acesso ainda precisa ser implementada.',
+      mensagem: 'Login realizado com sucesso!'
     }
+
   } catch (error) {
     return {
       sucesso: false,
       mensagem: error instanceof Error
         ? error.message
-        : 'Não foi possível realizar o login.',
+        : 'Não foi possível realizar o login.'
     }
   }
 }
