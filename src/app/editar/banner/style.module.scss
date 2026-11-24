@@ -104,6 +104,10 @@
   background-repeat: no-repeat;
   background-size: cover;
 
+  img {
+    object-fit: cover;
+  }
+
   &::after {
     position: absolute;
     inset: 45% 0 0;
