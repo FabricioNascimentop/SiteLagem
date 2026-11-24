@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useTransition, type FormEvent } from "react"
+import { useEffect, useState, useTransition, type FormEvent } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import type { divulgacoes } from "@/generated/prisma/client"
-import { apagarBanner, criarBanner, editarBanner } from "./actions"
+import { apagarBanner, criarBanner, editarBanner } from "./actions/CRUD/banner"
 import styles from "./style.module.scss"
 
 type Banner = divulgacoes
@@ -19,16 +19,42 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
   const [bannerSelecionado, setBannerSelecionado] = useState<Banner | null>(null)
   const [criando, setCriando] = useState(false)
   const [feedback, setFeedback] = useState("")
+  const [imagemUrl, setImagemUrl] = useState("")
+  const [dimensoesImagem, setDimensoesImagem] = useState<string | null>(null)
+  const [formatoImagem, setFormatoImagem] = useState("—")
   const [isPending, startTransition] = useTransition()
+
+  // Obtém as dimensões reais da imagem pelo carregamento no navegador.
+  useEffect(() => {
+    setDimensoesImagem(null)
+    setFormatoImagem("—")
+    if (!imagemUrl.trim()) return
+
+    try {
+      const url = new URL(imagemUrl)
+      const extensao = url.pathname.split(".").pop()?.toUpperCase()
+      setFormatoImagem(extensao && extensao.length <= 5 ? extensao : "Não identificado")
+    } catch {
+      setFormatoImagem("URL inválida")
+      return
+    }
+
+    const imagem = new window.Image()
+    imagem.onload = () => setDimensoesImagem(`${imagem.naturalWidth} × ${imagem.naturalHeight} px`)
+    imagem.onerror = () => setDimensoesImagem("Não foi possível carregar a imagem")
+    imagem.src = imagemUrl
+  }, [imagemUrl])
 
   function selecionarBanner(banner: Banner) {
     setBannerSelecionado(banner)
+    setImagemUrl(banner.imagem_url ?? "")
     setCriando(false)
     setFeedback("")
   }
 
   function novoBanner() {
     setBannerSelecionado(null)
+    setImagemUrl("")
     setCriando(true)
     setFeedback("")
   }
@@ -180,8 +206,21 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
 
                 <div className={styles.campo}>
                   <label htmlFor="imagem_url">Endereço da imagem <span>*</span></label>
-                  <input id="imagem_url" name="imagem_url" type="url" required defaultValue={bannerSelecionado?.imagem_url ?? ""} placeholder="https://..." />
-                  <small>Utilize uma imagem horizontal, preferencialmente em 16:9.</small>
+                  <input id="imagem_url" name="imagem_url" type="url" required value={imagemUrl} onChange={(event) => setImagemUrl(event.target.value)} placeholder="https://..." />
+                  <small>Informe uma URL pública de imagem. A prévia identifica as dimensões disponíveis.</small>
+                  <div className={styles.imagemInfo}>
+                    {imagemUrl && (
+                      <div className={styles.imagemPreview}>
+                        <Image src={imagemUrl} alt="Prévia da imagem do banner" fill unoptimized sizes="(max-width: 700px) 90vw, 420px" />
+                      </div>
+                    )}
+                    <div className={styles.imagemMetadados}>
+                      <div><span>Dimensões atuais</span><strong>{dimensoesImagem ?? (imagemUrl ? "Carregando..." : "Aguardando URL")}</strong></div>
+                      <div><span>Formato identificado</span><strong>{formatoImagem}</strong></div>
+                      <div><span>Tamanho recomendado</span><strong>1920 × 1080 px (16:9)</strong></div>
+                      <div><span>Formato recomendado</span><strong>WebP ou AVIF</strong></div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className={styles.campo}>
@@ -224,7 +263,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
                 <div className={styles.formRodape}>
                   <span><i /> Campos com * são obrigatórios</span>
                   <div>
-                    <button type="button" className={styles.cancelarBotao} onClick={() => { setCriando(false); setBannerSelecionado(null); setFeedback("") }} disabled={isPending}>Cancelar</button>
+                    <button type="button" className={styles.cancelarBotao} onClick={() => { setCriando(false); setBannerSelecionado(null); setImagemUrl(""); setFeedback("") }} disabled={isPending}>Cancelar</button>
                     <button type="submit" className={styles.botaoPrimario} disabled={isPending}>
                       {isPending ? "Salvando..." : criando ? "Criar banner" : "Salvar alterações"}
                     </button>
