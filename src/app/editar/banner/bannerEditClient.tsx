@@ -39,7 +39,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
       return
     }
 
-    const extensao = url.pathname.match(/\\.(avif|webp|png|jpe?g|gif|svg|bmp|tiff?)$/i)?.[1]
+    const extensao = url.pathname.match(/\.(avif|webp|png|jpe?g|gif|svg|bmp|tiff?)$/i)?.[1]
     setFormatoImagem(extensao ? extensao.toUpperCase() : "Não identificado")
 
     let ativo = true
@@ -105,7 +105,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
   }
 
   const editorAtivo = criando || bannerSelecionado !== null
-  const imagemUrlValida = /^https?:\\/\\/.+/i.test(imagemUrl)
+  const imagemUrlValida = /^https?:\/\/.+/i.test(imagemUrl)
 
   return (
     <main className={styles.main}>
