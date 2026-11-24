@@ -11,10 +11,18 @@
   background: transparent;
 
   &.scrolled {
-    background: rgba(12, 13, 12, 0.96);
-    backdrop-filter: blur(12px);
+    background: transparent;
     padding: var(--space-sm) 0;
     box-shadow: 0 2px 24px rgba(0, 0, 0, 0.3);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: rgba(12, 13, 12, 0.96);
+      backdrop-filter: blur(12px);
+    }
   }
 }
 
@@ -124,6 +132,42 @@
   // Mantém as propriedades visuais já existentes.
 }
 
+.btnEdit {
+  position: fixed;
+  right: var(--space-lg);
+  bottom: var(--space-lg);
+  z-index: 1100;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md) calc(var(--space-lg) * 1.25);
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--white);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+
+  &:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+  }
+
+  @include responsive('lg') {
+    display: none;
+  }
+}
+
 // Fundo escuro atrás do modal
 .modalOverlay {
   position: fixed;
@@ -222,4 +266,3 @@
     color: var(--primary);
   }
 }
-

@@ -1,5 +1,6 @@
-import HomePage from '@/pages/home/homepage'
+import HomePage from './homepageClient'
 import { prisma } from "@/lib/prisma"
+import { getUsuarioLogado } from '@/lib/auth';
 
 export default async function Home() {
   const [slides, artigos, dashboards] = await Promise.all([
@@ -19,7 +20,8 @@ export default async function Home() {
 
   const tipos = ["Artigo", "Tcc", "Tese", "Dissertação", "Outro", "Matéria", "Livro"] as const;
 
-  
+  const usuario = await getUsuarioLogado()
+
   //componente não está pronto
   const artigosParaExibir = artigos.map((a) => ({
     id: a.id,
@@ -34,6 +36,6 @@ export default async function Home() {
   }));
 
   return (
-    <HomePage dashboards={dashboards} publicacoes={artigosParaExibir} slides={slides}/>
+    <HomePage dashboards={dashboards} publicacoes={artigosParaExibir} slides={slides} usuario={usuario}/>
   );
 }

@@ -4,10 +4,14 @@ import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import styles from './style.module.scss'
 import { loginUsuario } from '@/actions/login'
+import { useRouter } from 'next/navigation'
+
 
 export default function LoginPage() {
   const [mensagem, setMensagem] = useState('')
   const [carregando, setCarregando] = useState(false)
+
+  const router = useRouter()
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -23,6 +27,15 @@ export default function LoginPage() {
 
     setMensagem(resultado.mensagem)
     setCarregando(false)
+
+    if (resultado.sucesso) {
+
+    
+
+    setTimeout(() => {
+      router.push('/')
+    }, 1000)
+  }
   }
 
   return (

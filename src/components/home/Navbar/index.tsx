@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './style.module.scss'
+import type {usuarios} from "@/generated/prisma/client"
+
 
 const navLinks = [
   { label: 'Início', href: '#inicio' },
@@ -16,10 +18,10 @@ const navLinks = [
 ]
 
 interface NavbarProps {
-  usuarioNome: string | null
+  usuario: usuarios | null
 }
 
-export default function NavbarClient({ usuarioNome }: NavbarProps) {
+export default function Navbar({ usuario }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false)
   const [modalUsuarioOpen, setModalUsuarioOpen] = useState(false)
 
@@ -56,10 +58,16 @@ export default function NavbarClient({ usuarioNome }: NavbarProps) {
             </a>
           ))}
 
-          {usuarioNome && (
+          {usuario && (
             <span className={styles.navLink}>
-              Olá, {usuarioNome}
+              {usuario.nome}
             </span>
+          )}
+
+          {usuario && (
+            <Link href="/editar" className={styles.btnEdit}>
+              Editar
+            </Link>
           )}
 
           <button
