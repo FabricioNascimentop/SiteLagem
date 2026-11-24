@@ -44,9 +44,19 @@ function lerDados(formData: FormData) {
   }
 
   try {
-    new URL(imagem_url)
+    const imagemUrl = new URL(imagem_url)
+    if (!["http:", "https:"].includes(imagemUrl.protocol)) throw new Error()
   } catch {
-    throw new Error("Informe uma URL válida para a imagem.")
+    throw new Error("Informe uma URL HTTP ou HTTPS válida para a imagem.")
+  }
+
+  if (link_destino) {
+    try {
+      const destinoUrl = new URL(link_destino)
+      if (!["http:", "https:"].includes(destinoUrl.protocol)) throw new Error()
+    } catch {
+      throw new Error("O link de destino deve começar com http:// ou https://.")
+    }
   }
 
   return {
