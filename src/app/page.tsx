@@ -1,4 +1,4 @@
-import HomePage from './homepageClient'
+import HomePageClient from './homepageClient'
 import { prisma } from "@/lib/prisma"
 import { getUsuarioLogado } from '@/lib/auth';
 
@@ -36,6 +36,6 @@ export default async function Home() {
   }));
 
   return (
-    <HomePage dashboards={dashboards} publicacoes={artigosParaExibir} slides={slides} usuario={usuario}/>
+    <HomePageClient dashboards={dashboards} publicacoes={artigosParaExibir} slides={slides} usuario={usuario}/>
   );
 }

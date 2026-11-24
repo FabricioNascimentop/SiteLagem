@@ -8,6 +8,8 @@ interface BannerEditProps {
 
 export default function BannerEditClient({bannerInfo}: BannerEditProps){
     return (
-        <h1>alo</h1>
+        <main>
+            
+        </main>
     )
 }

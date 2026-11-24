@@ -9,7 +9,7 @@ import type {usuarios} from "@/generated/prisma/client"
 
 import { SlideHeroProps, Dashboard, PropsPublicacoes } from "@/types/home";
 
-export default function HomePage({slides, publicacoes, dashboards, usuario}:{slides: SlideHeroProps[], publicacoes: PropsPublicacoes[], dashboards: Dashboard[], usuario: usuarios | null}){
+export default function HomepageClient({slides, publicacoes, dashboards, usuario}:{slides: SlideHeroProps[], publicacoes: PropsPublicacoes[], dashboards: Dashboard[], usuario: usuarios | null}){
     return(
         <main>
             <Navbar usuario={usuario}/>
