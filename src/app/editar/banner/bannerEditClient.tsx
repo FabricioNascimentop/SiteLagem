@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition, type FormEvent } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import type { divulgacoes } from "@/generated/prisma/client"
@@ -16,20 +17,20 @@ interface BannerEditProps {
 export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
   const router = useRouter()
   const [bannerSelecionado, setBannerSelecionado] = useState<Banner | null>(null)
-  const [modalAberto, setModalAberto] = useState(false)
+  const [criando, setCriando] = useState(false)
   const [feedback, setFeedback] = useState("")
   const [isPending, startTransition] = useTransition()
 
-  function abrirCriacao() {
+  function selecionarBanner(banner: Banner) {
+    setBannerSelecionado(banner)
+    setCriando(false)
     setFeedback("")
-    setBannerSelecionado(null)
-    setModalAberto(true)
   }
 
-  function abrirEdicao(banner: Banner) {
+  function novoBanner() {
+    setBannerSelecionado(null)
+    setCriando(true)
     setFeedback("")
-    setBannerSelecionado(banner)
-    setModalAberto(true)
   }
 
   function salvar(event: FormEvent<HTMLFormElement>) {
@@ -44,161 +45,196 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
       setFeedback(resultado.message)
 
       if (resultado.success) {
-        setModalAberto(false)
         router.refresh()
+        if (!bannerSelecionado) setCriando(false)
       }
     })
   }
 
   function excluir(id: number) {
-    const confirmado = window.confirm("Tem certeza que deseja excluir este banner? Essa ação não pode ser desfeita.")
-    if (!confirmado) return
+    if (!window.confirm("Tem certeza que deseja excluir este banner? Essa ação não pode ser desfeita.")) return
 
     startTransition(async () => {
       const resultado = await apagarBanner(id)
       setFeedback(resultado.message)
-      if (resultado.success) router.refresh()
+
+      if (resultado.success) {
+        if (bannerSelecionado?.id === id) {
+          setBannerSelecionado(null)
+          setCriando(false)
+        }
+        router.refresh()
+      }
     })
   }
+
+  const editorAtivo = criando || bannerSelecionado !== null
 
   return (
     <main className={styles.main}>
       <header className={styles.header}>
-        <a href="/editar" className={styles.voltar}>← Painel de administração</a>
-        <span className={styles.identificacao}>LAGEM · ADMINISTRAÇÃO</span>
+        <Link href="/editar" className={styles.voltar}>← Painel</Link>
+        <div className={styles.headerTitulo}>
+          <span>LAGEM</span>
+          <i />
+          <span>GERENCIAR BANNERS</span>
+        </div>
+        <span className={styles.contador}>{bannerInfo.length} {bannerInfo.length === 1 ? "banner" : "banners"}</span>
       </header>
 
-      <section className={styles.conteudo}>
-        <div className={styles.introducao}>
-          <span className={styles.sobretitulo}>CONTEÚDO DA PÁGINA INICIAL</span>
-          <h1>Banner principal</h1>
-          <p>Gerencie os destaques exibidos no carrossel da página inicial. As alterações em banners publicados aparecem no site após salvar.</p>
-        </div>
-
-        <div className={styles.acoesTopo}>
-          <div>
-            <h2>Banners cadastrados</h2>
-            <span>{bannerInfo.length} {bannerInfo.length === 1 ? "banner" : "banners"}</span>
+      <section className={styles.workspace}>
+        <aside className={styles.listaPainel}>
+          <div className={styles.listaTopo}>
+            <div>
+              <span className={styles.sobretitulo}>PÁGINA INICIAL</span>
+              <h1>Banners</h1>
+              <p>Selecione um banner para editar.</p>
+            </div>
+            <button type="button" className={styles.novoBotao} onClick={novoBanner}>
+              <span>+</span> Novo
+            </button>
           </div>
-          <button type="button" className={styles.botaoPrimario} onClick={abrirCriacao}>
-            + Adicionar banner
-          </button>
-        </div>
 
-        {feedback && !modalAberto && <p className={styles.feedback} role="status">{feedback}</p>}
-
-        {bannerInfo.length === 0 ? (
-          <div className={styles.vazio}>
-            <h3>Nenhum banner cadastrado</h3>
-            <p>Adicione o primeiro destaque para ele aparecer nesta área.</p>
-            <button type="button" className={styles.botaoPrimario} onClick={abrirCriacao}>Adicionar primeiro banner</button>
+          <div className={styles.listaCards}>
+            {bannerInfo.length === 0 ? (
+              <div className={styles.listaVazia}>
+                <span>01</span>
+                <p>Nenhum banner cadastrado.</p>
+              </div>
+            ) : (
+              bannerInfo.map((banner, index) => (
+                <article
+                  key={banner.id}
+                  className={`${styles.bannerItem} ${bannerSelecionado?.id === banner.id ? styles.bannerAtivo : ""}`}
+                >
+                  <button
+                    type="button"
+                    className={styles.bannerSelecionar}
+                    onClick={() => selecionarBanner(banner)}
+                    aria-pressed={bannerSelecionado?.id === banner.id}
+                  >
+                    <div className={styles.bannerThumb}>
+                      <Image
+                        src={banner.imagem_url || "/hero/placeholder.png"}
+                        alt={banner.alt_text || banner.titulo}
+                        fill
+                        unoptimized
+                        sizes="(max-width: 700px) 90vw, 30vw"
+                      />
+                      <span className={styles.thumbIndice}>{String(index + 1).padStart(2, "0")}</span>
+                    </div>
+                    <div className={styles.bannerResumo}>
+                      <strong>{banner.titulo}</strong>
+                      <span className={banner.status === "PUBLICADO" ? styles.statusPublicado : styles.statusRascunho}>
+                        <i /> {banner.status === "PUBLICADO" ? "Publicado" : "Rascunho"}
+                      </span>
+                    </div>
+                    <span className={styles.chevron}>›</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.excluirItem}
+                    onClick={() => excluir(banner.id)}
+                    disabled={isPending}
+                    aria-label={`Excluir ${banner.titulo}`}
+                    title="Excluir banner"
+                  >
+                    ×
+                  </button>
+                </article>
+              ))
+            )}
           </div>
-        ) : (
-          <div className={styles.grade}>
-            {bannerInfo.map((banner) => (
-              <article className={styles.card} key={banner.id}>
-                <div className={styles.imagem}>
-                  <Image
-                    src={banner.imagem_url || "/hero/placeholder.png"}
-                    alt={banner.alt_text || banner.titulo}
-                    fill
-                    unoptimized
-                    sizes="(max-width: 700px) 100vw, 50vw"
-                  />
-                  <span className={banner.status === "PUBLICADO" ? styles.publicado : styles.rascunho}>
-                    {banner.status === "PUBLICADO" ? "Publicado" : "Rascunho"}
-                  </span>
-                  <span className={styles.ordem}>Ordem {banner.ordem}</span>
+
+          <div className={styles.listaRodape}>
+            <span className={styles.pontoAtivo} />
+            As alterações são refletidas na página inicial após salvar.
+          </div>
+        </aside>
+
+        <section className={styles.editorPainel}>
+          {!editorAtivo ? (
+            <div className={styles.editorVazio}>
+              <div className={styles.iconeVazio}>↗</div>
+              <span className={styles.sobretitulo}>EDITOR DE CONTEÚDO</span>
+              <h2>Escolha um banner</h2>
+              <p>Selecione um item na lista ao lado para editar suas informações ou crie um novo banner.</p>
+              <button type="button" className={styles.botaoPrimario} onClick={novoBanner}>+ Criar novo banner</button>
+            </div>
+          ) : (
+            <div className={styles.editorConteudo} key={bannerSelecionado?.id ?? "novo"}>
+              <div className={styles.editorTopo}>
+                <div>
+                  <span className={styles.sobretitulo}>{criando ? "NOVO CONTEÚDO" : "EDITANDO CONTEÚDO"}</span>
+                  <h2>{criando ? "Adicionar banner" : bannerSelecionado?.titulo}</h2>
+                  <p>{criando ? "Preencha os campos para cadastrar um novo destaque." : "Atualize os campos e salve para publicar as alterações."}</p>
                 </div>
-                <div className={styles.cardConteudo}>
-                  <h3>{banner.titulo}</h3>
-                  <p>{banner.descricao || "Sem descrição cadastrada."}</p>
-                  <div className={styles.cardAcoes}>
-                    <button type="button" className={styles.botaoSecundario} onClick={() => abrirEdicao(banner)}>
-                      Editar
-                    </button>
-                    <button type="button" className={styles.botaoExcluir} disabled={isPending} onClick={() => excluir(banner.id)}>
-                      Excluir
+                <span className={styles.editorTag}>{criando ? "NOVO" : `#${bannerSelecionado?.id}`}</span>
+              </div>
+
+              <form className={styles.formulario} onSubmit={salvar}>
+                <div className={styles.campo}>
+                  <label htmlFor="titulo">Título do banner <span>*</span></label>
+                  <input id="titulo" name="titulo" required maxLength={180} defaultValue={bannerSelecionado?.titulo ?? ""} placeholder="Ex.: Desenvolvimento e pesquisa na Amazônia" />
+                </div>
+
+                <div className={styles.campo}>
+                  <label htmlFor="imagem_url">Endereço da imagem <span>*</span></label>
+                  <input id="imagem_url" name="imagem_url" type="url" required defaultValue={bannerSelecionado?.imagem_url ?? ""} placeholder="https://..." />
+                  <small>Utilize uma imagem horizontal, preferencialmente em 16:9.</small>
+                </div>
+
+                <div className={styles.campo}>
+                  <label htmlFor="alt_text">Texto alternativo</label>
+                  <input id="alt_text" name="alt_text" maxLength={250} defaultValue={bannerSelecionado?.alt_text ?? ""} placeholder="Descrição da imagem para acessibilidade" />
+                </div>
+
+                <div className={styles.campo}>
+                  <label htmlFor="descricao">Descrição</label>
+                  <textarea id="descricao" name="descricao" rows={4} maxLength={500} defaultValue={bannerSelecionado?.descricao ?? ""} placeholder="Texto complementar do banner..." />
+                </div>
+
+                <div className={styles.duasColunas}>
+                  <div className={styles.campo}>
+                    <label htmlFor="link_destino">Link de destino</label>
+                    <input id="link_destino" name="link_destino" type="url" defaultValue={bannerSelecionado?.link_destino ?? ""} placeholder="https://..." />
+                  </div>
+                  <div className={styles.campo}>
+                    <label htmlFor="fonte">Crédito da imagem</label>
+                    <input id="fonte" name="fonte" defaultValue={bannerSelecionado?.fonte ?? ""} placeholder="Fonte / autoria" />
+                  </div>
+                </div>
+
+                <div className={styles.duasColunas}>
+                  <div className={styles.campo}>
+                    <label htmlFor="ordem">Ordem de exibição</label>
+                    <input id="ordem" name="ordem" type="number" min="0" step="1" defaultValue={bannerSelecionado?.ordem ?? 0} />
+                  </div>
+                  <div className={styles.campo}>
+                    <label htmlFor="status">Visibilidade</label>
+                    <select id="status" name="status" defaultValue={bannerSelecionado?.status ?? "RASCUNHO"}>
+                      <option value="RASCUNHO">Rascunho</option>
+                      <option value="PUBLICADO">Publicado</option>
+                    </select>
+                  </div>
+                </div>
+
+                {feedback && <p className={styles.feedback} role="status">{feedback}</p>}
+
+                <div className={styles.formRodape}>
+                  <span><i /> Campos com * são obrigatórios</span>
+                  <div>
+                    <button type="button" className={styles.cancelarBotao} onClick={() => { setCriando(false); setBannerSelecionado(null); setFeedback("") }} disabled={isPending}>Cancelar</button>
+                    <button type="submit" className={styles.botaoPrimario} disabled={isPending}>
+                      {isPending ? "Salvando..." : criando ? "Criar banner" : "Salvar alterações"}
                     </button>
                   </div>
                 </div>
-              </article>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {modalAberto && (
-        <div className={styles.overlay} role="presentation" onMouseDown={(event) => {
-          if (event.target === event.currentTarget && !isPending) setModalAberto(false)
-        }}>
-          <section className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
-            <div className={styles.modalTopo}>
-              <div>
-                <span className={styles.sobretitulo}>{bannerSelecionado ? "ATUALIZAÇÃO" : "NOVO CONTEÚDO"}</span>
-                <h2 id="modal-titulo">{bannerSelecionado ? "Editar banner" : "Adicionar banner"}</h2>
-              </div>
-              <button type="button" className={styles.fechar} onClick={() => setModalAberto(false)} disabled={isPending} aria-label="Fechar">×</button>
+              </form>
             </div>
-
-            <form key={bannerSelecionado?.id ?? "novo"} className={styles.formulario} onSubmit={salvar}>
-              <label>
-                Título *
-                <input name="titulo" required maxLength={180} defaultValue={bannerSelecionado?.titulo ?? ""} placeholder="Título do destaque" />
-              </label>
-
-              <label>
-                URL da imagem *
-                <input name="imagem_url" type="url" required defaultValue={bannerSelecionado?.imagem_url ?? ""} placeholder="https://..." />
-              </label>
-
-              <label>
-                Texto alternativo da imagem
-                <input name="alt_text" maxLength={250} defaultValue={bannerSelecionado?.alt_text ?? ""} placeholder="Descreva a imagem para acessibilidade" />
-              </label>
-
-              <label>
-                Descrição
-                <textarea name="descricao" rows={3} maxLength={500} defaultValue={bannerSelecionado?.descricao ?? ""} placeholder="Texto exibido junto ao destaque" />
-              </label>
-
-              <div className={styles.linhaCampos}>
-                <label>
-                  Link de destino
-                  <input name="link_destino" type="url" defaultValue={bannerSelecionado?.link_destino ?? ""} placeholder="https://..." />
-                </label>
-                <label>
-                  Fonte / crédito
-                  <input name="fonte" defaultValue={bannerSelecionado?.fonte ?? ""} placeholder="Origem da imagem" />
-                </label>
-              </div>
-
-              <div className={styles.linhaCampos}>
-                <label>
-                  Ordem de exibição
-                  <input name="ordem" type="number" min="0" step="1" defaultValue={bannerSelecionado?.ordem ?? 0} />
-                </label>
-                <label>
-                  Status
-                  <select name="status" defaultValue={bannerSelecionado?.status ?? "RASCUNHO"}>
-                    <option value="RASCUNHO">Rascunho</option>
-                    <option value="PUBLICADO">Publicado</option>
-                  </select>
-                </label>
-              </div>
-
-              {feedback && <p className={styles.erro} role="alert">{feedback}</p>}
-
-              <div className={styles.formAcoes}>
-                <button type="button" className={styles.botaoSecundario} onClick={() => setModalAberto(false)} disabled={isPending}>Cancelar</button>
-                <button type="submit" className={styles.botaoPrimario} disabled={isPending}>
-                  {isPending ? "Salvando..." : "Salvar banner"}
-                </button>
-              </div>
-            </form>
-          </section>
-        </div>
-      )}
+          )}
+        </section>
+      </section>
     </main>
   )
 }
