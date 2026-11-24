@@ -30,19 +30,29 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
     setFormatoImagem("—")
     if (!imagemUrl.trim()) return
 
+    let url: URL
     try {
-      const url = new URL(imagemUrl)
-      const extensao = url.pathname.split(".").pop()?.toUpperCase()
-      setFormatoImagem(extensao && extensao.length <= 5 ? extensao : "Não identificado")
+      url = new URL(imagemUrl)
+      if (!["http:", "https:"].includes(url.protocol)) throw new Error()
     } catch {
       setFormatoImagem("URL inválida")
       return
     }
 
+    const extensao = url.pathname.match(/\\.(avif|webp|png|jpe?g|gif|svg|bmp|tiff?)$/i)?.[1]
+    setFormatoImagem(extensao ? extensao.toUpperCase() : "Não identificado")
+
+    let ativo = true
     const imagem = new window.Image()
-    imagem.onload = () => setDimensoesImagem(`${imagem.naturalWidth} × ${imagem.naturalHeight} px`)
-    imagem.onerror = () => setDimensoesImagem("Não foi possível carregar a imagem")
+    imagem.onload = () => {
+      if (ativo) setDimensoesImagem(`${imagem.naturalWidth} × ${imagem.naturalHeight} px`)
+    }
+    imagem.onerror = () => {
+      if (ativo) setDimensoesImagem("Não foi possível carregar a imagem")
+    }
     imagem.src = imagemUrl
+
+    return () => { ativo = false }
   }, [imagemUrl])
 
   function selecionarBanner(banner: Banner) {
@@ -95,6 +105,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
   }
 
   const editorAtivo = criando || bannerSelecionado !== null
+  const imagemUrlValida = /^https?:\\/\\/.+/i.test(imagemUrl)
 
   return (
     <main className={styles.main}>
