@@ -1,5 +1,3 @@
-'use server'
-
 /**
  * Valida e normaliza os campos recebidos do formulário de banners.
  * Mantém regras de entrada fora das operações de banco de dados.
