@@ -2,6 +2,7 @@
 
 import { useState, useTransition, type FormEvent } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import type { divulgacoes } from "@/generated/prisma/client"
 import { apagarBanner, criarBanner, editarBanner } from "./actions"
 import styles from "./style.module.scss"
@@ -96,12 +97,14 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
           <div className={styles.grade}>
             {bannerInfo.map((banner) => (
               <article className={styles.card} key={banner.id}>
-                <div
-                  className={styles.imagem}
-                  style={{ backgroundImage: `url("${banner.imagem_url}")` }}
-                  role="img"
-                  aria-label={banner.alt_text || banner.titulo}
-                >
+                <div className={styles.imagem}>
+                  <Image
+                    src={banner.imagem_url || "/hero/placeholder.png"}
+                    alt={banner.alt_text || banner.titulo}
+                    fill
+                    unoptimized
+                    sizes="(max-width: 700px) 100vw, 50vw"
+                  />
                   <span className={banner.status === "PUBLICADO" ? styles.publicado : styles.rascunho}>
                     {banner.status === "PUBLICADO" ? "Publicado" : "Rascunho"}
                   </span>
