@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import Image from "next/image"
 import type { divulgacoes } from "@/generated/prisma/client"
 import { apagarBanner, criarBanner, editarBanner } from "./actions/CRUD/banner"
+import { uploadBannerImagem } from "./actions/CRUD/uploadImagem"
 import styles from "./style.module.scss"
 
 type Banner = divulgacoes
@@ -23,6 +24,8 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
   const [imagemUrl, setImagemUrl] = useState("")
   const [dimensoesImagem, setDimensoesImagem] = useState<string | null>(null)
   const [formatoImagem, setFormatoImagem] = useState("—")
+  const [pesoImagem, setPesoImagem] = useState("—")
+  const [uploadando, setUploadando] = useState(false)
   const [isPending, startTransition] = useTransition()
 
   // Obtém as dimensões reais da imagem pelo carregamento no navegador.
@@ -56,7 +59,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
     return () => { ativo = false }
   }, [imagemUrl])
 
-  function selecionarBanner(banner: Banner) {
+  async function enviarImagem(arquivo: File) {\n    setUploadando(true)\n    setFeedback("")\n    setDimensoesImagem(`${arquivo.size ? "Calculando dimensões..." : "—"}`)\n    setFormatoImagem(arquivo.type.split("/")[1]?.toUpperCase() || "Não identificado")\n    setPesoImagem(arquivo.size < 1024 * 1024 ? `${(arquivo.size / 1024).toFixed(1)} KB` : `${(arquivo.size / 1024 / 1024).toFixed(2)} MB`)\n    const localPreview = URL.createObjectURL(arquivo)\n    const imagem = new window.Image()\n    imagem.onload = () => { setDimensoesImagem(`${imagem.naturalWidth} × ${imagem.naturalHeight} px`); URL.revokeObjectURL(localPreview) }\n    imagem.src = localPreview\n    try {\n      const dados = new FormData()\n      dados.set("arquivo", arquivo)\n      const resultado = await uploadBannerImagem(dados)\n      if (!resultado.success || !resultado.url) { setFeedback(resultado.message); return }\n      setImagemUrl(resultado.url)\n      setFeedback("Imagem enviada. Salve o banner para registrar as alterações.")\n    } catch { setFeedback("Falha ao enviar a imagem.") }\n    finally { setUploadando(false) }\n  }\n\n  function selecionarBanner(banner: Banner) {
     setBannerSelecionado(banner)
     setImagemUrl(banner.imagem_url ?? "")
     setCriando(false)
@@ -223,7 +226,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
                     )}
                     <div className={styles.imagemMetadados}>
                       <div><span>Dimensões atuais</span><strong>{dimensoesImagem ?? (imagemUrl ? "Carregando..." : "Aguardando URL")}</strong></div>
-                      <div><span>Formato identificado</span><strong>{formatoImagem}</strong></div>
+                      <div><span>Formato identificado</span><strong>{formatoImagem}</strong></div>\n                      <div><span>Peso do arquivo</span><strong>{pesoImagem}</strong></div>
                       <div><span>Tamanho recomendado</span><strong>1920 × 1080 px (16:9)</strong></div>
                       <div><span>Formato recomendado</span><strong>WebP ou AVIF</strong></div>
                     </div>
@@ -272,7 +275,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
                   <div>
                     <button type="button" className={styles.cancelarBotao} onClick={() => { setCriando(false); setBannerSelecionado(null); setImagemUrl(""); setFeedback("") }} disabled={isPending}>Cancelar</button>
                     <button type="submit" className={styles.botaoPrimario} disabled={isPending}>
-                      {isPending ? "Salvando..." : criando ? "Criar banner" : "Salvar alterações"}
+                      {isPending ? "Salvando..." : uploadando ? "Enviando imagem..." : criando ? "Criar banner" : "Salvar alterações"}
                     </button>
                   </div>
                 </div>
