@@ -28,13 +28,18 @@ export async function uploadBannerImagem(formData: FormData): Promise<UploadResu
     return { success: false, message: "A imagem deve ter no máximo 8 MB." }
   }
 
-  try {
-    const nomeArquivo = `${randomUUID()}.${extensao}`
-    const diretorio = path.join(process.cwd(), "public", "banners")
-    await mkdir(diretorio, { recursive: true })
-    await writeFile(path.join(diretorio, nomeArquivo), Buffer.from(await arquivo.arrayBuffer()))
+  const nomeSolicitado = String(formData.get("nomeArquivo") ?? "").trim()
+  const nomeSeguro = nomeSolicitado.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").replace(/[^a-zA-Z0-9_-]/g, "-").replace(/-+/g, "-").replace(/^[-_]|[-_]$/g, "").slice(0, 80)
+  if (!nomeSeguro) return { success: false, message: "Informe um nome de arquivo válido." }
 
-    return { success: true, message: "Imagem enviada.", url: `/banners/${nomeArquivo}` }
+  try {
+    const nomeArquivo = `${nomeSeguro || randomUUID()}.${extensao}`
+    const diretorio = path.join(process.cwd(), "public", "hero")
+    await mkdir(diretorio, { recursive: true })
+    const destino = path.join(diretorio, nomeArquivo)
+    await writeFile(destino, Buffer.from(await arquivo.arrayBuffer()))
+
+    return { success: true, message: "Imagem enviada.", url: `/hero/${nomeArquivo}` }
   } catch {
     return { success: false, message: "Não foi possível armazenar a imagem." }
   }
