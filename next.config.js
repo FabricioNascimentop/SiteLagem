@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig = {\n  experimental: {\n    serverActions: {\n      bodySizeLimit: '8mb',\n    },\n  },
   images: {
     remotePatterns: [
       {
