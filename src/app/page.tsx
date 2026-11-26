@@ -18,6 +18,8 @@ export default async function Home() {
     }),
   ]);
 
+  console.log(slides)
+
   const tipos = ["Artigo", "Tcc", "Tese", "Dissertação", "Outro", "Matéria", "Livro"] as const;
 
   const usuario = await getUsuarioLogado()

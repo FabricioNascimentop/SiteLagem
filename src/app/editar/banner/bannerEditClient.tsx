@@ -11,6 +11,7 @@ import styles from "./style.module.scss"
 
 type Banner = divulgacoes
 
+
 interface BannerEditProps {
   bannerInfo: Banner[]
 }
@@ -59,28 +60,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
     return () => { ativo = false }
   }, [imagemUrl])
 
-  async function enviarImagem(arquivo: File) {
-    setUploadando(true)
-    setFeedback("")
-    setDimensoesImagem(`${arquivo.size ? "Calculando dimensões..." : "—"}`)
-    setFormatoImagem(arquivo.type.split("/")[1]?.toUpperCase() || "Não identificado")
-    setPesoImagem(arquivo.size < 1024 * 1024 ? `${(arquivo.size / 1024).toFixed(1)} KB` : `${(arquivo.size / 1024 / 1024).toFixed(2)} MB`)
-    const localPreview = URL.createObjectURL(arquivo)
-    const imagem = new window.Image()
-    imagem.onload = () => { setDimensoesImagem(`${imagem.naturalWidth} × ${imagem.naturalHeight} px`); URL.revokeObjectURL(localPreview) }
-    imagem.src = localPreview
-    try {
-      const dados = new FormData()
-      dados.set("arquivo", arquivo)
-      const resultado = await uploadBannerImagem(dados)
-      if (!resultado.success || !resultado.url) { setFeedback(resultado.message); return }
-      setImagemUrl(resultado.url)
-      setFeedback("Imagem enviada. Salve o banner para registrar as alterações.")
-    } catch { setFeedback("Falha ao enviar a imagem.") }
-    finally { setUploadando(false) }
-  }
-
-  function selecionarBanner(banner: Banner) {
+  async function enviarImagem(arquivo: File) {   setUploadando(true);  setFeedback("");   setDimensoesImagem(`${arquivo.size ? "Calculando dimensões..." : "—"}`);    setFormatoImagem(arquivo.type.split("/")[1]?.toUpperCase() || "Não identificado");    setPesoImagem(arquivo.size < 1024 * 1024 ? `${(arquivo.size / 1024).toFixed(1)} KB` : `${(arquivo.size / 1024 / 1024).toFixed(2)} MB`);    const localPreview = URL.createObjectURL(arquivo);    const imagem = new window.Image();    imagem.onload = () => { setDimensoesImagem(`${imagem.naturalWidth} × ${imagem.naturalHeight} px`); URL.revokeObjectURL(localPreview) };   imagem.src = localPreview    ;try {const dados = new FormData();     dados.set("arquivo", arquivo);     const resultado = await uploadBannerImagem(dados);      if (!resultado.success || !resultado.url) { setFeedback(resultado.message); return }    setImagemUrl(resultado.url);      setFeedback("Imagem enviada. Salve o banner para registrar as alterações.")    } catch { setFeedback("Falha ao enviar a imagem.") }   finally { setUploadando(false) } }  function selecionarBanner(banner: Banner) {
     setBannerSelecionado(banner)
     setImagemUrl(banner.imagem_url ?? "")
     setCriando(false)
@@ -166,45 +146,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
               </div>
             ) : (
               bannerInfo.map((banner, index) => (
-                <article
-                  key={banner.id}
-                  className={`${styles.bannerItem} ${bannerSelecionado?.id === banner.id ? styles.bannerAtivo : ""}`}
-                >
-                  <button
-                    type="button"
-                    className={styles.bannerSelecionar}
-                    onClick={() => selecionarBanner(banner)}
-                    aria-pressed={bannerSelecionado?.id === banner.id}
-                  >
-                    <div className={styles.bannerThumb}>
-                      <Image
-                        src={banner.imagem_url || "/hero/placeholder.png"}
-                        alt={banner.alt_text || banner.titulo}
-                        fill
-                        unoptimized
-                        sizes="(max-width: 700px) 90vw, 30vw"
-                      />
-                      <span className={styles.thumbIndice}>{String(index + 1).padStart(2, "0")}</span>
-                    </div>
-                    <div className={styles.bannerResumo}>
-                      <strong>{banner.titulo}</strong>
-                      <span className={banner.status === "PUBLICADO" ? styles.statusPublicado : styles.statusRascunho}>
-                        <i /> {banner.status === "PUBLICADO" ? "Publicado" : "Rascunho"}
-                      </span>
-                    </div>
-                    <span className={styles.chevron}>›</span>
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.excluirItem}
-                    onClick={() => excluir(banner.id)}
-                    disabled={isPending}
-                    aria-label={`Excluir ${banner.titulo}`}
-                    title="Excluir banner"
-                  >
-                    ×
-                  </button>
-                </article>
+               <MiniBannerAside banner={banner} key={index} index={index} bannerSelecionado={bannerSelecionado} onExcluir={excluir} selecionarBanner={selecionarBanner} isPending={isPending}/>
               ))
             )}
           </div>
@@ -311,6 +253,9 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
 }
 
 
+
+
+
 function MockupEmBranco({onCriarNovoBanner}:{ onCriarNovoBanner: () => void }){
   return(
      <div className={styles.editorVazio}>
@@ -321,4 +266,55 @@ function MockupEmBranco({onCriarNovoBanner}:{ onCriarNovoBanner: () => void }){
               <button type="button" className={styles.botaoPrimario} onClick={onCriarNovoBanner}>+ Criar novo banner</button>
       </div>
   )
+}
+interface MiniBannerAsideProps {
+  banner: Banner
+  index: number
+  bannerSelecionado: Banner | null
+  onExcluir: (id: number) => void
+  selecionarBanner: (banner: Banner) => void
+  isPending: boolean
+}
+function MiniBannerAside({banner,index,onExcluir,selecionarBanner,bannerSelecionado, isPending}: MiniBannerAsideProps) {
+    return(
+          <article
+                        key={banner.id}
+                        className={`${styles.bannerItem} ${bannerSelecionado?.id === banner.id ? styles.bannerAtivo : ""}`}
+                      >
+                        <button
+                          type="button"
+                          className={styles.bannerSelecionar}
+                          onClick={() => selecionarBanner(banner)}
+                          aria-pressed={bannerSelecionado?.id === banner.id}
+                        >
+                          <div className={styles.bannerThumb}>
+                            <Image
+                              src={banner.imagem_url || "/hero/placeholder.png"}
+                              alt={banner.alt_text || banner.titulo}
+                              fill
+                              unoptimized
+                              sizes="(max-width: 700px) 90vw, 30vw"
+                            />
+                            <span className={styles.thumbIndice}>{String(index + 1).padStart(2, "0")}</span>
+                          </div>
+                          <div className={styles.bannerResumo}>
+                            <strong>{banner.titulo}</strong>
+                            <span className={banner.status === "PUBLICADO" ? styles.statusPublicado : styles.statusRascunho}>
+                              <i /> {banner.status === "PUBLICADO" ? "Publicado" : "Rascunho"}
+                            </span>
+                          </div>
+                          <span className={styles.chevron}>›</span>
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.excluirItem}
+                          onClick={() => onExcluir(banner.id)}
+                          disabled={isPending}
+                          aria-label={`Excluir ${banner.titulo}`}
+                          title="Excluir banner"
+                        >
+                          ×
+                        </button>
+                      </article>
+            )
 }
