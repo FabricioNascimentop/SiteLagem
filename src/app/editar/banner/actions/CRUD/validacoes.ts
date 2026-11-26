@@ -17,12 +17,7 @@ export function lerDadosBanner(formData: FormData) {
   if (!Number.isInteger(ordem) || ordem < 0) throw new Error("A ordem deve ser um número inteiro igual ou maior que zero.")
 
   // Aceita somente URLs HTTP/HTTPS; evita protocolos executáveis ou inválidos.
-  try {
-    const url = new URL(imagem_url)
-    if (!["http:", "https:"].includes(url.protocol)) throw new Error()
-  } catch {
-    throw new Error("Informe uma URL HTTP ou HTTPS válida para a imagem.")
-  }
+  
 
   if (link_destino) {
     try {

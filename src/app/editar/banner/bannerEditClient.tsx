@@ -14,6 +14,7 @@ interface BannerEditProps {
   bannerInfo: Banner[]
 }
 
+
 export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
   const router = useRouter()
   const [bannerSelecionado, setBannerSelecionado] = useState<Banner | null>(null)
@@ -68,6 +69,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
     setCriando(true)
     setFeedback("")
   }
+
 
   function salvar(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -191,13 +193,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
 
         <section className={styles.editorPainel}>
           {!editorAtivo ? (
-            <div className={styles.editorVazio}>
-              <div className={styles.iconeVazio}>↗</div>
-              <span className={styles.sobretitulo}>EDITOR DE CONTEÚDO</span>
-              <h2>Escolha um banner</h2>
-              <p>Selecione um item na lista ao lado para editar suas informações ou crie um novo banner.</p>
-              <button type="button" className={styles.botaoPrimario} onClick={novoBanner}>+ Criar novo banner</button>
-            </div>
+            <MockupEmBranco onCriarNovoBanner={novoBanner}/>
           ) : (
             <div className={styles.editorConteudo} key={bannerSelecionado?.id ?? "novo"}>
               <div className={styles.editorTopo}>
@@ -217,7 +213,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
 
                 <div className={styles.campo}>
                   <label htmlFor="imagem_url">Endereço da imagem <span>*</span></label>
-                  <input id="imagem_url" name="imagem_url" type="url" required value={imagemUrl} onChange={(event) => setImagemUrl(event.target.value)} placeholder="https://..." />
+                  <input id="imagem_url" name="imagem_url" type="text" required value={imagemUrl} onChange={(event) => setImagemUrl(event.target.value)} placeholder="https://..." />
                   <small>Informe uma URL pública de imagem. A prévia identifica as dimensões disponíveis.</small>
                   <div className={styles.imagemInfo}>
                     {imagemUrl && (
@@ -247,7 +243,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
                 <div className={styles.duasColunas}>
                   <div className={styles.campo}>
                     <label htmlFor="link_destino">Link de destino</label>
-                    <input id="link_destino" name="link_destino" type="url" defaultValue={bannerSelecionado?.link_destino ?? ""} placeholder="https://..." />
+                    <input id="link_destino" name="link_destino" type="text" defaultValue={bannerSelecionado?.link_destino ?? ""} placeholder="https://..." />
                   </div>
                   <div className={styles.campo}>
                     <label htmlFor="fonte">Crédito da imagem</label>
@@ -286,5 +282,18 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
         </section>
       </section>
     </main>
+  )
+}
+
+
+function MockupEmBranco({onCriarNovoBanner}:{ onCriarNovoBanner: () => void }){
+  return(
+     <div className={styles.editorVazio}>
+              <div className={styles.iconeVazio}>↗</div>
+              <span className={styles.sobretitulo}>EDITOR DE CONTEÚDO</span>
+              <h2>Escolha um banner</h2>
+              <p>Selecione um item na lista ao lado para editar suas informações ou crie um novo banner.</p>
+              <button type="button" className={styles.botaoPrimario} onClick={onCriarNovoBanner}>+ Criar novo banner</button>
+      </div>
   )
 }
