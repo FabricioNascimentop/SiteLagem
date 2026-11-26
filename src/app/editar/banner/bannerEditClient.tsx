@@ -39,7 +39,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
 
     let url: URL
     try {
-      url = new URL(imagemUrl)
+      url = new URL(imagemUrl, window.location.origin)
       if (!["http:", "https:"].includes(url.protocol)) throw new Error()
     } catch {
       setFormatoImagem("URL inválida")
