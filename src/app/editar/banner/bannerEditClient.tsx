@@ -27,6 +27,9 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
   const [formatoImagem, setFormatoImagem] = useState("—")
   const [pesoImagem, setPesoImagem] = useState("—")
   const [uploadando, setUploadando] = useState(false)
+  const [arquivoSelecionado, setArquivoSelecionado] = useState<File | null>(null)
+  const [nomeArquivo, setNomeArquivo] = useState("")
+  const [previewLocal, setPreviewLocal] = useState("")
   const [isPending, startTransition] = useTransition()
 
   // Obtém as dimensões reais da imagem pelo carregamento no navegador.
@@ -37,7 +40,7 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
 
     let url: URL
     try {
-      url = new URL(imagemUrl)
+      url = new URL(imagemUrl, window.location.origin)
       if (!["http:", "https:"].includes(url.protocol)) throw new Error()
     } catch {
       setFormatoImagem("URL inválida")
@@ -60,9 +63,44 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
     return () => { ativo = false }
   }, [imagemUrl])
 
-  async function enviarImagem(arquivo: File) {   setUploadando(true);  setFeedback("");   setDimensoesImagem(`${arquivo.size ? "Calculando dimensões..." : "—"}`);    setFormatoImagem(arquivo.type.split("/")[1]?.toUpperCase() || "Não identificado");    setPesoImagem(arquivo.size < 1024 * 1024 ? `${(arquivo.size / 1024).toFixed(1)} KB` : `${(arquivo.size / 1024 / 1024).toFixed(2)} MB`);    const localPreview = URL.createObjectURL(arquivo);    const imagem = new window.Image();    imagem.onload = () => { setDimensoesImagem(`${imagem.naturalWidth} × ${imagem.naturalHeight} px`); URL.revokeObjectURL(localPreview) };   imagem.src = localPreview    ;try {const dados = new FormData();     dados.set("arquivo", arquivo);     const resultado = await uploadBannerImagem(dados);      if (!resultado.success || !resultado.url) { setFeedback(resultado.message); return }    setImagemUrl(resultado.url);      setFeedback("Imagem enviada. Salve o banner para registrar as alterações.")    } catch { setFeedback("Falha ao enviar a imagem.") }   finally { setUploadando(false) } }  function selecionarBanner(banner: Banner) {
+  function selecionarArquivo(arquivo?: File) {
+    if (!arquivo) return
+    setArquivoSelecionado(arquivo)
+    setNomeArquivo(arquivo.name.replace(/\\.[^.]+$/, ""))
+    setFeedback("")
+    setFormatoImagem(arquivo.type.split("/")[1]?.toUpperCase() || "Não identificado")
+    setPesoImagem(arquivo.size < 1024 * 1024 ? `${(arquivo.size / 1024).toFixed(1)} KB` : `${(arquivo.size / 1024 / 1024).toFixed(2)} MB`)
+    const local = URL.createObjectURL(arquivo)
+    setPreviewLocal(local)
+    const imagem = new window.Image()
+    imagem.onload = () => setDimensoesImagem(`${imagem.naturalWidth} × ${imagem.naturalHeight} px`)
+    imagem.src = local
+  }
+
+  async function enviarImagem() {
+    if (!arquivoSelecionado) return
+    setUploadando(true)
+    setFeedback("")
+    try {
+      const dados = new FormData()
+      dados.set("arquivo", arquivoSelecionado)
+      dados.set("nomeArquivo", nomeArquivo)
+      const resultado = await uploadBannerImagem(dados)
+      if (!resultado.success || !resultado.url) { setFeedback(resultado.message); return }
+      setImagemUrl(resultado.url)
+      setArquivoSelecionado(null)
+      setPreviewLocal("")
+      setFeedback("Imagem enviada. Salve o banner para registrar as alterações.")
+    } catch { setFeedback("Falha ao enviar a imagem.") }
+    finally { setUploadando(false) }
+  }
+
+  function selecionarBanner(banner: Banner) {
     setBannerSelecionado(banner)
     setImagemUrl(banner.imagem_url ?? "")
+    setArquivoSelecionado(null)
+    setPreviewLocal("")
+    setNomeArquivo("")
     setCriando(false)
     setFeedback("")
   }
@@ -70,6 +108,9 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
   function novoBanner() {
     setBannerSelecionado(null)
     setImagemUrl("")
+    setArquivoSelecionado(null)
+    setPreviewLocal("")
+    setNomeArquivo("")
     setCriando(true)
     setFeedback("")
   }
@@ -178,18 +219,29 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
                 </div>
 
                 <div className={styles.campo}>
-                  <label htmlFor="imagem_url">Endereço da imagem <span>*</span></label>
-                  <input id="imagem_url" name="imagem_url" type="text" required value={imagemUrl} onChange={(event) => setImagemUrl(event.target.value)} placeholder="https://..." />
-                  <small>Informe uma URL pública de imagem. A prévia identifica as dimensões disponíveis.</small>
+                  <label htmlFor="imagem_file">Arquivo de imagem <span>*</span></label>
+                  <input id="imagem_url" name="imagem_url" type="hidden" value={imagemUrl} />
+                  <input id="imagem_file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={(event) => selecionarArquivo(event.target.files?.[0])} />
+                  <small>Envie JPG, PNG, WebP ou AVIF (máximo 8 MB). A imagem será armazenada em public/hero.</small>
+                  {arquivoSelecionado && (
+                    <div className={styles.campo}>
+                      <label htmlFor="nomeArquivo">Nome do arquivo (sem extensão)</label>
+                      <input id="nomeArquivo" value={nomeArquivo} onChange={(event) => setNomeArquivo(event.target.value)} />
+                      <button type="button" className={styles.botaoPrimario} onClick={enviarImagem} disabled={uploadando || !nomeArquivo.trim()}>
+                        {uploadando ? "Enviando..." : "Enviar imagem para public/hero"}
+                      </button>
+                    </div>
+                  )}
                   <div className={styles.imagemInfo}>
-                    {imagemUrl && (
+                    {(previewLocal || imagemUrl) && (
                       <div className={styles.imagemPreview}>
-                        <Image src={imagemUrl} alt="Prévia da imagem do banner" fill unoptimized sizes="(max-width: 700px) 90vw, 420px" />
+                        <Image src={previewLocal || imagemUrl} alt="Prévia da imagem do banner" fill unoptimized sizes="(max-width: 700px) 90vw, 420px" />
                       </div>
                     )}
                     <div className={styles.imagemMetadados}>
                       <div><span>Dimensões atuais</span><strong>{dimensoesImagem ?? (imagemUrl ? "Carregando..." : "Aguardando URL")}</strong></div>
                       <div><span>Formato identificado</span><strong>{formatoImagem}</strong></div>
+                      <div><span>Nome do arquivo</span><strong>{nomeArquivo || imagemUrl.split("/").pop() || "—"}</strong></div>
                       <div><span>Peso do arquivo</span><strong>{pesoImagem}</strong></div>
                       <div><span>Tamanho recomendado</span><strong>1920 × 1080 px (16:9)</strong></div>
                       <div><span>Formato recomendado</span><strong>WebP ou AVIF</strong></div>
@@ -238,8 +290,8 @@ export default function BannerEditClient({ bannerInfo }: BannerEditProps) {
                   <span><i /> Campos com * são obrigatórios</span>
                   <div>
                     <button type="button" className={styles.cancelarBotao} onClick={() => { setCriando(false); setBannerSelecionado(null); setImagemUrl(""); setFeedback("") }} disabled={isPending}>Cancelar</button>
-                    <button type="submit" className={styles.botaoPrimario} disabled={isPending}>
-                      {isPending ? "Salvando..." : uploadando ? "Enviando imagem..." : criando ? "Criar banner" : "Salvar alterações"}
+                    <button type="submit" className={styles.botaoPrimario} disabled={isPending || uploadando || !!arquivoSelecionado}>
+                      {isPending ? "Salvando..." : uploadando ? "Enviando imagem..." : arquivoSelecionado ? "Envie a imagem antes de salvar" : criando ? "Criar banner" : "Salvar alterações"}
                     </button>
                   </div>
                 </div>
