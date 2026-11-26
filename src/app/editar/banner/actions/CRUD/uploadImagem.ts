@@ -29,7 +29,7 @@ export async function uploadBannerImagem(formData: FormData): Promise<UploadResu
   }
 
   const nomeSolicitado = String(formData.get("nomeArquivo") ?? "").trim()
-  const nomeSeguro = nomeSolicitado.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").replace(/[^a-zA-Z0-9_-]/g, "-").replace(/-+/g, "-").replace(/^[-_]|[-_]$/g, "").slice(0, 80)
+  const nomeSeguro = nomeSolicitado.replace(/[^a-zA-Z0-9_-]/g, "-").replace(/-+/g, "-").replace(/^[-_]|[-_]$/g, "").slice(0, 80)
   if (!nomeSeguro) return { success: false, message: "Informe um nome de arquivo válido." }
 
   try {
